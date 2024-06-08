@@ -1,0 +1,16 @@
+{
+  "name": "ditu",
+  "version": "1.0.0",
+  "description": "DiTU is a way to explore language feature usages in real-world codebases for JavaScript and TypeScript",
+  "type": "module",
+  "main": "src/index.js",
+  "dependencies": {
+    "cloc": "^2.0.0-cloc",
+    "commander": "^10.0.1",
+    "csv": "^6.3.6",
+    "marked": "^5.0.1",
+    "seed-random": "^2.2.0",
+    "tree-kill": "^1.2.2"
+  },
+  "author": "Anonymous"
+}
