@@ -101,7 +101,10 @@ In the statistical result analysis result JSON [`240221-result.json`](./repo-lis
   * Property whose name started with `max-count-of-` is the metric **Max Count**, and the concrete meaning should be self-explanatory enough through the property name.
   * Property whose name started with `type(s)-` is the metric **Usage Context Type** or **Syntax Node Type** based on its concrete meaning.
 
-In the paper, we mainly utilized the property `feature-usage-` to visualize various feature usage trends, and in text we also selectively chose some metrics to demonstrate the fine detail of features.
+In the paper, we mainly utilized the property `feature-usage-` to visualize various feature usage trends, and in text we also selectively chose some metrics to demonstrate the fine detail of features. Due to the page limit, in paper Table 2 only exhibit representative feature usage trends, and all 38 feature usage trends can be seen in this repository [here](./repo-list/240221-trends.png).
+
+> [!NOTE]
+> As described in Paper Table 2's footnote, some features did not come with a corresponding chart because it was hard to assign a proper denominator to calculate the usage frequency.
 
 ## Feature README Structure
 
@@ -155,9 +158,12 @@ Tags provide extra prospect for categorize faetures.
 
 ## Getting Started
 
-We provide multiple checkpoints that support both starting from scratch and final result validation.
+This section will guide you to replicate our experiment and analysis from cloning repository to final analysis and code review by statistic trace back. We provide multiple checkpoints in this whole process so that you can either start from scratch or use our pre-uploaded data.
 
-> This section will be updated on Jun 10.
+> [!CAUTION]
+> This experiment is extremly space-consuming. The Code-as-Data storage for ~3k repositories takes ~180GB disk space. If you want to fully replicate our experiment results, you should prepare **an SSD disk with at least 256GB empty space**.
+
+Almost all steps rely on the centric command line interface [`src/cli.js`](./src/cli.js), and you should have `Node.js` available in your system and install dependency packages by running `npm i` at the root directory of this repo. All available commands of `cli.js` are listed below, and some of them will be used in the following step-by-step tutorials.
 
 ```text
 Commands:
@@ -177,3 +183,225 @@ Commands:
   summary [options] <db-dir>                   Collect all log data and generate a summary report
                                                Requires '../lib' holds all godel scripts
 ```
+
+> [!IMPORTANT]
+> To run `cli.js`, there are several requirements:
+> 1. The command line **Current Working Directory (CWD)** should be at `./src`;
+> 2. The command `sparrow` should be available in the environment variable `PATH` (See **Install CodeFuse-Query** section);
+> 3. Git config `uploadpack.allowReachableSHA1InWant` is set to `true` ([Tutorial](https://stackoverflow.com/a/43136160/13878671)) for cloning only necessary and non-adjacent commits.
+
+<details>
+<summary>Install CodeFuse-Query</summary>
+
+[**CodeFuse-Query**](https://github.com/codefuse-ai/CodeFuse-Query?tab=readme-ov-file) is a CodeQL-like data-centric static code analysis system developed by *Ant Group*. It was utilized in our study for parsing codebase to AST and storing them as a relational database, and it also provides a Datalog-like query language namely [**GodelScript**](https://github.com/codefuse-ai/CodeFuse-Query/blob/main/doc/4_godelscript_language.en.md).
+
+To continue replicate our experiment process, you need to install CodeFuse-Query binary first. You can follow its [installation guide](https://github.com/codefuse-ai/CodeFuse-Query/blob/main/doc/3_install_and_run.en.md).
+
+> [!NOTE]
+> CodeFuse-Query works on Linux and macOS only. Though Windows is not supported, WSL can be used (Follow [this issue](https://github.com/codefuse-ai/CodeFuse-Query/issues/36#issuecomment-1975027164) to address a missing lib issue in WSL).
+
+After successifully installed CodeFuse-Query, please also:
+1. Add the installation directory to the environment variable `PATH`;
+2. run `node cli.js gather` to let the script setup GodelScript dependency automatically for you.
+</details>
+
+<details>
+<summary>Clone Repository</summary>
+
+To start from the beginning, you need to fetch a JavaScript/TypeScript repository to local. We had [a list of the most starred repositories](./repo-list/240221.csv) as described in paper Section 3.2 attached with this repo. You can also use your own favorite repositories, but you are suggested to add them to the list so that you can also enjoy with the centric cli in the following steps.
+
+To clone a repository that was already listed in the list, run `node cli.js fetch-repo /path/to/repo-dir [options]` to clone the latest commit of that repository (and optional several specific historical commits), where `/path/to/repo-dir` is the directory where you want to store cloned repositories.
+
+Available options for this command are as follows:
+
+```text
+Clone repos from GitHub using the pre-specified repo list csv file
+
+Arguments:
+  dir                        The base dir where cloned repos are stored
+
+Options:
+  -s --start <start>         Start repo count (started from 1) (default: 1)
+  -e --end <end>             End repo count (included)
+  -d --depth <depth>         Git clone depth (default: 1)
+  -c --commits <commits...>  Commit indices to checkout, available values are from 0 to 4
+```
+
+E.g.: the command `node cli.js fetch-repo /path/to/repo-dir -s 1 -e 2 -c 0 1 2 3 4` clones all five commits (present, 2023/7, 2023/1, 2022/7, 2022/1, as assigned by `-c 0 1 2 3 4`) of repositories `facebook/react` (the first repository in the list, as assigned by `-s 1`) and `vuejs/vue` (the second repository in the list, as assigned by `-e 2`). The `commit_` columns in the list are used to determine the concrete commit SHA.
+</details>
+
+<details>
+<summary>Code-as-Data Storage</summary>
+
+After repositories are cloned to local, the next step is to utilize CodeFuse-Query to generate corresponding dabase for each repository. Run `node cli.js create-db /path/to/repo-dir /path/to/db-dir [options]` to do so, where `/path/to/db-dir` is the directory where you want to store generated database files (and correlated query results in the following steps).
+
+Available options for this command are as follows:
+
+```text
+Create Sparrow DB for each repo in the given dir
+
+Arguments:
+  repo-dir                   The base dir where cloned repos are stored
+  db-dir                     The base dir where dbs are stored
+
+Options:
+  -s --start <start>         Start repo count (default: 1)
+  -e --end <end>             End repo count
+  -c --commits <commits...>  Commit indices to work on
+```
+
+> [!WARNING]
+> This step could be time-consuming depending on the repository size and whether SSD or HDD are you using.
+> 1. CodeFuse-Query has an 1 hour multdown threshold hard-coded for database generation;
+> 2. You are highly suggested to use an SSD to store code repositories and generated databases.
+</details>
+
+<details>
+<summary>Feature Usage Instance Query</summary>
+
+After databases are generated successfully, the next step is to execute GodelScript query scripts to extract language feature usage instances and save them in JSON files. To do so, run `node cli.js run-godel /path/to/db-dir [options]`.
+
+Available options for this command are as follows:
+
+```text
+Run Godel scripts on each db in the given dir
+This command requires 'gather' command to be manually executed first
+
+Arguments:
+  db-dir                     The base dir where dbs are stored
+
+Options:
+  -s --start <start>         Start repo count (default: 1)
+  -e --end <end>             End repo count
+  -c --commits <commits...>  Commit indices to work on
+  -t --timeout <timeout>     Timeout (in minute) for each Godel script
+                             Set to 0 to disable timeout (default: 10)
+  -o --override              Override existing godel results (default: false)
+  -g --groups <group...>     Run only specified fixture groups (with all features in them)
+                             Item ends with .gdl will be treated as a script (no 'get-' prefix)
+```
+
+E.g., the command `node cli.js run-godel /path/to/db-dir -s 1 -e 1 -c 0 -g typescript all-classes.gdl` executes
+
+1. All GodelScript query scripts under the fixture group [`typescript`](./fixtures/typescript/);
+2. A query script [`all-classes.gdl`](./fixtures/class/get-all-classes.gdl).
+
+on the first commit of the first repository, corresponding result JSONs can be found under the directory `/path/to/db-dir/repo@commit`, where every JSON is the result of the query script with the same name.
+
+> [!WARNING]
+> This step could also be time-consuming depending on the database size and the complexity of the query script.
+</details>
+
+<details open>
+<summary>Metric Calculation</summary>
+
+> [!NOTE]
+> You can download our pre-uploaded raw query JSON results at [https://doi.org/10.5281/zenodo.11544610](https://doi.org/10.5281/zenodo.11544610). The download zip takes ~3GB, and the unzipped files takes ~180GB.
+
+After all query JSON results are generated, the next step is to calculate various metrics, as described in paper Section 2.3. To do so, run `node cli.js post-process /path/to/db-dir [options]`.
+
+Available options for this command are as follows:
+
+```text
+Invoke post process JS scripts to process Godel's output and generate final metric results
+
+Arguments:
+  db-dir                     The base dir where dbs are stored
+
+Options:
+  -s --start <start>         Start repo count (default: 1)
+  -e --end <end>             End repo count
+  -c --commits <commits...>  Commit indices to work on
+  --no-merge                 Do not merge new results with existing results
+                             (Old results will be lost)
+  -g --groups <group...>     Run only specified fixture groups
+                             Using "group/feature" to specify feature only
+```
+
+After executing this command, a `results.json` will be generated under corresponding database directory. The content is as follows, where each top-level entry represents a language feature (See [ID Mapping Table](#id-mapping-table) above), and correlated object holds all metric values of that feature (See [Metrics](#metrics) above).
+
+```json
+{
+  "variable-declaration/comma-elision": {
+    "all-array-destructuring-variable-declarations": 0,
+    "array-destructuring-with-elision": 0,
+    "feature-usage-against-variable-array-destructuring-usage": null,
+    "max-count-of-comma-elisions-in-one-declaration": 0,
+    "types": {
+      "comma-elision": 0,
+      "pseudo-elision": 0
+    }
+  },
+  "...": "..."
+}
+```
+
+> [!TIP]
+> This step should be way more faster than CodeFuse-Query related steps, but it still takes ~5min to handle this large data scale.
+</details>
+
+<details open>
+<summary>Statistical Analysis</summary>
+
+> [!NOTE]
+> You can find our pre-generated statistical analysis results at [`240221-results.json`](./repo-list/240221-results.json), but you need a better editor to open and view it since it contains too many lines, as described in [Result Interpretation](#result-interpretation) above.
+
+After metrics are calculated for each database, the next step is add **time** as a new dimention for statistical analysis and the reveal of feature usage trends. To do so, run `node cli.js analyze /path/to/db-dir`, and the result `240221-results.json` will be generated under the directory `./repo-list`, which should be the same as what this repository contains if you exactly replicate our experiment.
+</details>
+
+<details open>
+<summary>Metric Trace-back</summary>
+
+In paper Section 4.3 and 4.4 (Results to RQ2 and RQ3) exhibit feature usage intent and pattern analysis results, which were derived by this step. At this step, we trace back some certain metrics to the source code that produce corresponding metrics, and have experienced developers to sampling review them to summarize code intents and patterns. To do so, run `node cli.js trace /path/to/db-dir <feature> <metric> [options]`, this command will output several GitHub links like `https://github.com/nolimits4web/swiper/blob/2351d15250b309e0aefdf4ed83b9fece79a07472/src/types/swiper-events.d.ts#L350`, which directly jump to the exact line in source code that results in the metric **The maximum count of declaration merging participants** to be 22 (Result JSON line 205206) for the TypeScript feature **(TS-10) Use declaration merging**.
+
+Available options for this command are as follows:
+
+```text
+Trace the raw data source of a specific metric
+Requires '../repo-list/xxx-results.json' to exist
+
+Arguments:
+  db-dir                   The base dir where dbs are stored
+  feature                  The feature name
+  metric                   The metric name
+
+Options:
+  -i --indices <index...>  The result index (of max source) to trace
+  -f --full                Display full results inspect of its length
+  -s --shuffle <seed>      Shuffle the trace results and output only 10 of them for case study
+```
+
+E.g., to produce the previously mentioned trace result, the command should be `node cli.js trace /path/to/db-dir typescript/declaration-merging max-count-of-merging-elements -i 0`.
+
+There are also some pattern summarizations have nothing to do with the max metric value, but require sampling code riview. For example, the result JSON shows that there are developers using declaration merging on three different entity types (that is, `ClassDeclaration,InterfaceDeclaration,ModuleDeclaration` in result JSON line 205253), and we want to see the source code that results in this weird metric result, we could use the command `node cli.js trace /path/to/db-dir/ typescript/declaration-merging types/ClassDeclaration,InterfaceDeclaration,ModuleDeclaration -s 2024` which gives us a GitHub link `https://github.com/pixijs/pixijs/blob/13a1ad357b61393c3f11d4de9b11d346b36e1946/packages/loaders/src/LoaderResource.ts#L98`. This example drives us summarize the corresponding code smell pattern as listed in the 13th row of the in paper Table 3.
+
+Please note that we did't implement cooresponding trace-back functionality for all metrics, refer to the below table to know which metrics do we support.
+
+| Feature Key | Trace-able Metrics |
+|---|---|
+| class/fancy-member-name | types/fancy-string-literal<br>types/raw-numeric-literal |
+| class/static-block | class-with-static-block |
+| function/use-arguments-in-function-body | types/with-normal-param-decl<br>types/with-rest-param-decl |
+| function/use-this-in-function-body | types/called-with-new<br>types/called-without-new |
+| misc/standalone-block | types-decl/declaration-inside/case<br>types-decl/declaration-inside/non-case<br>types-decl/no-declaration/case<br>types-decl/no-declaration/non-case<br>max-count-of-nesting-depth |
+| misc/tag-function | types/tagged<br>fancy-tagged-tag-types/* |
+| module-system/export-value-and-type-in-one-name | types/exported |
+| module-system/import-then-export-over-reexport | import-then-export |
+| module-system/side-effect-import | types/EmptyBraceImport |
+| object-mechanism/first-class-citizen-modify-prop | modified-functions<br>modified-classes |
+| object-mechanism/reassign-to-declaration-name | modified-functions<br>modified-classes |
+| typescript/class-constructor-parameter-field | types/mixed-field-and-parameter |
+| typescript/declaration-merging | max-count-of-merging-elements<br>types/* |
+| typescript/enum-member-fancy-name | feature-usage-confusing-name-against-string-literal-name |
+| typescript/enum-member-overridden-initializer | types-initializer-index/PartialInit |
+| typescript/namespace-identifier-path | max-count-of-identifier-path-length |
+| typescript/overridden-type-parameter | type-parameters-in-overriding-usage |
+| variable-declaration/comma-elision | max-count-of-comma-elisions-in-one-declaration |
+| variable-declaration/declaration-list | max-count-of-list-length |
+</details>
+
+## Questionnaire Survey Disclaimer
+
+As described in paper Section 3.3, we conducted questionnaire survey on several experienced developers to validate our findings on three code smell like feature usage patterns. The survey structure is listed in Section 3.3, and feature detail fact questions are listed in Table 4. In paper Table 4 also exhibits analyzed survey results, and in paper Section 4.4.2 interpreted this table.
+
+The raw data of the survey was not open-sourced in this repository since it was sensitive data in the company.
