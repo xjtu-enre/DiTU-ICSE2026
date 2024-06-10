@@ -12,10 +12,11 @@ This repository contains tools, data, and scripts for our work **DiTU: Exploring
 |  |- 240221.csv            // Project repository list, as described in paper Section 3.2
 |  |- 240221-summary.csv    // Experimental meta data (mostly query execution duration)
 |  |- 240221-results.json   // Statistical metric analysis results, as described in paper Section 2.3
+|  |- 240221-trends.png     // More feature usage trends that in-paper Table 2 didn't exhibit due to page limit
 |- fixtures                 // Feature READMEs, GodelScript query scripts, post-process scripts
 |  |- class                 // A feature group
 |  |  |- fancy-member-name  // A feature under the 'Class' group, in-paper ID is CD-02
-|  |  |  |- README.md       // Feature description, unit tests, metrics, tags (for multi-dementional categorization, not used in Paper)
+|  |  |  |- README.md       // Feature description, unit tests, metrics, tags (for multi-dementional categorization, not used in paper)
 |  |  |  |- index.js        // Post-process JavaScript script
 |  |  |  |- use-all-class-members.gdl  // GodelScript query script, see below on how to interprete the naming pattern
 |  |- ...
@@ -85,59 +86,38 @@ There are also 4 features listed but not analyzed due to query tool did not supp
 | Use string alias in import/export alias | [module-system/string-alias](./fixtures/module-system/string-alias/README.md) | Not supported by TypeScript (A [known issue](https://github.com/microsoft/TypeScript/issues/40594)) |
 | Declare `const` enum | [typescript/const-enum](./fixtures/typescript/const-enum/README.md) | Parser version 4.5 < 5.0 |
 
-## Result Interpretation
-
-In the statistical result analysis result JSON [`240221-result.json`](./repo-list/240221-results.json):
-
-> This JSON file contains too many lines, to ensure the best viewing experience, you are suggested to open it with an editor that support large-file collapse (like WebStorm).
-
-* Each top-level entry represents a feature, e.g., `variable-declaration/comma-elision` at line 2 corresponds to the feature VD-05.
-  > The entry key follows the `<Feature group key>/<Feature key>` pattern, where a `key` is the directory name that can be found in the above mapping table.
-
-* In a top-level object, several properties alongwith their values are presented, the naming pattern is loosely coupled with the metric we designed (As descripted in paper Section 2.3).
-  * Property whose name started with `all-` and the next adjacent property (the metric **Usage Times**) are used to calculate the metric **Usage Frequency**, e.g., the usage frequency of feature VD-05 can be calculated by `array-destructuring-with-elision/sum (L5269)` / `all-array-destructuring-variable-declarations(L2635)`.
-  * Property whose name started with `feature-usage-` is the metric **Usage Frequency** (So the above caluculation process was already performed).
-    > Note that some features did not possess their corresponding usage frequency metric, this is because it was difficult for them to assign a proper denominator (property `all-`) to perform the division, e.g., TS-10 declaration merging allows variaous entity types to participant in and it is not practical to sum them all.
-  * Property whose name started with `max-count-of-` is the metric **Max Count**, and the concrete meaning should be self-explanatory enough through the property name.
-  * Property whose name started with `type(s)-` is the metric **Usage Context Type** or **Syntax Node Type** based on its concrete meaning.
-
-In the paper, we mainly utilized the property `feature-usage-` to visualize various feature usage trends, and in text we also selectively chose some metrics to demonstrate the fine detail of features. Due to the page limit, in paper Table 2 only exhibit representative feature usage trends, and all 38 feature usage trends can be seen in this repository [here](./repo-list/240221-trends.png).
-
-> [!NOTE]
-> As described in Paper Table 2's footnote, some features did not come with a corresponding chart because it was hard to assign a proper denominator to calculate the usage frequency.
-
-## Feature README Structure
+### Feature README Structure
 
 Every feature README consists of 3 parts.
 
-### Patterns (Not refers to usage pattern in the paper)
+#### Patterns (Not refers to usage pattern in the paper)
 
 This section lists (almost) all available code that matches this feature based on the language spec, and serves as unit test and demonstration while implementing the query script.
 
-### Metrics
+#### Metrics
 
 Metrics designed for this feature.
 
-#### #Usage, #Usage(feature)%(denominator1, denominator2, ...)
+##### #Usage, #Usage(feature)%(denominator1, denominator2, ...)
 
 This metric produces a count number of the feature and several percentages where each percentage is against a certain denominator.
 
-#### Type{type1, type2, ...}
+##### Type{type1, type2, ...}
 
 This metric produces one of values that defined within the bracket, can be seen as an enumerator. (Each option should be explained.)
 
-#### MaxCount(description)
+##### MaxCount(description)
 
 This metrics produces the max count number of the feature in a given context, for example, the max depth, the max usage count under a class, etc.
 
-#### Decorators
+##### Decorators
 
 Metrics can be appended with decorators to indicate additional information.
 
 * `@LLMPowered`, it means that this metric requires interaction with the LLM.
 * `@intent?`, it means that this metric requires further investigation to determine the reason to use this feature.
 
-### Tags
+#### Tags
 
 Tags provide extra prospect for categorize faetures.
 
@@ -155,6 +135,28 @@ Tags provide extra prospect for categorize faetures.
 | `semantic` | The feature is a high-level semantic feature, and may require semantic analysis to resolve. |
 
 1. Can append `(ES2022)` or `(TS5.0)` or both with comma separation to indicate the language version that introduces this feature.
+
+## Result Interpretation
+
+In the statistical analysis result JSON [`240221-result.json`](./repo-list/240221-results.json):
+
+> [!WARNING]
+> This JSON file contains too many lines, to ensure the best viewing experience, you are suggested to open it with an editor that support large-file collapse (like WebStorm).
+
+* Each top-level entry represents a feature, e.g., `variable-declaration/comma-elision` at line 2 corresponds to the feature VD-05.
+  > The entry key follows the `<Feature group key>/<Feature key>` pattern, where a `key` is the directory name that can be found in the above mapping table.
+
+* In a top-level object, several properties alongwith their values are presented, the naming pattern is loosely coupled with the metric we designed (As descripted in paper Section 2.3).
+  * Property whose name started with `all-` and the next adjacent property (the metric **Usage Times**) are used to calculate the metric **Usage Frequency**, e.g., the usage frequency of feature VD-05 can be calculated by `array-destructuring-with-elision/sum (L5269)` / `all-array-destructuring-variable-declarations(L2635)`.
+  * Property whose name started with `feature-usage-` is the metric **Usage Frequency** (So the above caluculation process was already performed).
+    > Note that some features did not possess their corresponding usage frequency metric, this is because it was difficult for them to assign a proper denominator (property `all-`) to perform the division, e.g., TS-10 declaration merging allows variaous entity types to participant in and it is not practical to sum them all.
+  * Property whose name started with `max-count-of-` is the metric **Max Count**, and the concrete meaning should be self-explanatory enough through the property name.
+  * Property whose name started with `type(s)-` is the metric **Usage Context Type** or **Syntax Node Type** based on its concrete meaning.
+
+In the paper, we mainly utilized the property `feature-usage-` to visualize various feature usage trends, and in text we also selectively chose some metrics to demonstrate the fine detail of features. Due to the page limit, the in-paper Table 2 only exhibit representative feature usage trends, and all 38 feature usage trends can be seen in this repository [here](./repo-list/240221-trends.png).
+
+> [!NOTE]
+> As described in the in-paper Table 2's footnote, some features did not come with a corresponding chart because it was hard to assign a proper denominator to calculate the usage frequency.
 
 ## Getting Started
 
@@ -208,9 +210,15 @@ After successifully installed CodeFuse-Query, please also:
 <details>
 <summary>Clone Repository</summary>
 
-To start from the beginning, you need to fetch a JavaScript/TypeScript repository to local. We had [a list of the most starred repositories](./repo-list/240221.csv) as described in paper Section 3.2 attached with this repo. You can also use your own favorite repositories, but you are suggested to add them to the list so that you can also enjoy with the centric cli in the following steps.
+To start from the beginning, you need to fetch a JavaScript/TypeScript repository to local. We had [a list of the most starred repositories](./repo-list/240221.csv), as described in the in-paper Section 3.2, attached with this repo. You can also use your own favorite repositories, but you are suggested to add them to the list so that you can also enjoy with the centric cli in the following steps.
 
-To clone a repository that was already listed in the list, run `node cli.js fetch-repo /path/to/repo-dir [options]` to clone the latest commit of that repository (and optional several specific historical commits), where `/path/to/repo-dir` is the directory where you want to store cloned repositories.
+To clone a repository that was already listed in the list, run
+
+```bash
+node cli.js fetch-repo /path/to/repo-dir [options]
+```
+
+to clone the latest commit of that repository (and optional several specific historical commits), where `/path/to/repo-dir` is the directory where you want to store cloned repositories.
 
 Available options for this command are as follows:
 
@@ -227,13 +235,25 @@ Options:
   -c --commits <commits...>  Commit indices to checkout, available values are from 0 to 4
 ```
 
-E.g.: the command `node cli.js fetch-repo /path/to/repo-dir -s 1 -e 2 -c 0 1 2 3 4` clones all five commits (present, 2023/7, 2023/1, 2022/7, 2022/1, as assigned by `-c 0 1 2 3 4`) of repositories `facebook/react` (the first repository in the list, as assigned by `-s 1`) and `vuejs/vue` (the second repository in the list, as assigned by `-e 2`). The `commit_` columns in the list are used to determine the concrete commit SHA.
+E.g.: the command
+
+```bash
+node cli.js fetch-repo /path/to/repo-dir -s 1 -e 2 -c 0 1 2 3 4
+```
+
+clones all five commits (present, 2023/7, 2023/1, 2022/7, 2022/1, as assigned by `-c 0 1 2 3 4`) of repositories `facebook/react` (the first repository in the list, as assigned by `-s 1`) and `vuejs/vue` (the second repository in the list, as assigned by `-e 2`). The `commit_` columns in the list are used to determine the concrete commit SHA.
 </details>
 
 <details>
 <summary>Code-as-Data Storage</summary>
 
-After repositories are cloned to local, the next step is to utilize CodeFuse-Query to generate corresponding dabase for each repository. Run `node cli.js create-db /path/to/repo-dir /path/to/db-dir [options]` to do so, where `/path/to/db-dir` is the directory where you want to store generated database files (and correlated query results in the following steps).
+After repositories are cloned to local, the next step is to utilize CodeFuse-Query to generate corresponding dabase for each repository. Run
+
+```bash
+node cli.js create-db /path/to/repo-dir /path/to/db-dir [options]
+```
+
+to do so, where `/path/to/db-dir` is the directory where you want to store generated database files (and correlated query results in the following steps).
 
 Available options for this command are as follows:
 
@@ -259,7 +279,11 @@ Options:
 <details>
 <summary>Feature Usage Instance Query</summary>
 
-After databases are generated successfully, the next step is to execute GodelScript query scripts to extract language feature usage instances and save them in JSON files. To do so, run `node cli.js run-godel /path/to/db-dir [options]`.
+After databases are generated successfully, the next step is to execute GodelScript query scripts to extract language feature usage instances and save them in JSON files. To do so, run:
+
+```bash
+node cli.js run-godel /path/to/db-dir [options]
+```
 
 Available options for this command are as follows:
 
@@ -281,7 +305,13 @@ Options:
                              Item ends with .gdl will be treated as a script (no 'get-' prefix)
 ```
 
-E.g., the command `node cli.js run-godel /path/to/db-dir -s 1 -e 1 -c 0 -g typescript all-classes.gdl` executes
+E.g., the command
+
+```bash
+node cli.js run-godel /path/to/db-dir -s 1 -e 1 -c 0 -g typescript all-classes.gdl
+```
+
+executes
 
 1. All GodelScript query scripts under the fixture group [`typescript`](./fixtures/typescript/);
 2. A query script [`all-classes.gdl`](./fixtures/class/get-all-classes.gdl).
@@ -296,9 +326,13 @@ on the first commit of the first repository, corresponding result JSONs can be f
 <summary>Metric Calculation</summary>
 
 > [!NOTE]
-> You can download our pre-uploaded raw query JSON results at [https://doi.org/10.5281/zenodo.11544610](https://doi.org/10.5281/zenodo.11544610). The download zip takes ~3GB, and the unzipped files takes ~180GB.
+> You can download our pre-uploaded raw query JSON results at [https://doi.org/10.5281/zenodo.11544610](https://doi.org/10.5281/zenodo.11544610). The download zip takes ~3GB, and **the unzipped files takes ~180GB**.
 
-After all query JSON results are generated, the next step is to calculate various metrics, as described in paper Section 2.3. To do so, run `node cli.js post-process /path/to/db-dir [options]`.
+After all query JSON results are generated, the next step is to calculate various metrics, as described in the in-paper Section 2.3. To do so, run:
+
+```bash
+node cli.js post-process /path/to/db-dir [options]
+```
 
 Available options for this command are as follows:
 
@@ -346,13 +380,31 @@ After executing this command, a `results.json` will be generated under correspon
 > [!NOTE]
 > You can find our pre-generated statistical analysis results at [`240221-results.json`](./repo-list/240221-results.json), but you need a better editor to open and view it since it contains too many lines, as described in [Result Interpretation](#result-interpretation) above.
 
-After metrics are calculated for each database, the next step is add **time** as a new dimention for statistical analysis and the reveal of feature usage trends. To do so, run `node cli.js analyze /path/to/db-dir`, and the result `240221-results.json` will be generated under the directory `./repo-list`, which should be the same as what this repository contains if you exactly replicate our experiment.
+After metrics are calculated for each database, the next step is add **time** as a new dimention for statistical analysis and the reveal of feature usage trends. To do so, run
+
+```bash
+node cli.js analyze /path/to/db-dir
+```
+
+, and the result `240221-results.json` will be generated under the directory `./repo-list`, which should be the same as what this repository contains if you exactly replicate our experiment.
 </details>
 
 <details open>
 <summary>Metric Trace-back</summary>
 
-In paper Section 4.3 and 4.4 (Results to RQ2 and RQ3) exhibit feature usage intent and pattern analysis results, which were derived by this step. At this step, we trace back some certain metrics to the source code that produce corresponding metrics, and have experienced developers to sampling review them to summarize code intents and patterns. To do so, run `node cli.js trace /path/to/db-dir <feature> <metric> [options]`, this command will output several GitHub links like `https://github.com/nolimits4web/swiper/blob/2351d15250b309e0aefdf4ed83b9fece79a07472/src/types/swiper-events.d.ts#L350`, which directly jump to the exact line in source code that results in the metric **The maximum count of declaration merging participants** to be 22 (Result JSON line 205206) for the TypeScript feature **(TS-10) Use declaration merging**.
+In-paper Section 4.3 and 4.4 (Results to RQ2 and RQ3) exhibit feature usage intent and pattern analysis results, which were derived by this step. At this step, we trace back some certain metrics to the source code that produce corresponding metrics, and have experienced developers to sampling review them to summarize code intents and patterns. To do so, run
+
+```bash
+node cli.js trace /path/to/db-dir <feature> <metric> [options]
+```
+
+, this command will output several GitHub links like
+
+```text
+https://github.com/nolimits4web/swiper/blob/2351d15250b309e0aefdf4ed83b9fece79a07472/src/types/swiper-events.d.ts#L350
+```
+
+, which directly jump to the exact line in source code that results in the metric **The maximum count of declaration merging participants** to be 22 (Result JSON line 205206) for the TypeScript feature **(TS-10) Use declaration merging**.
 
 Available options for this command are as follows:
 
@@ -371,9 +423,25 @@ Options:
   -s --shuffle <seed>      Shuffle the trace results and output only 10 of them for case study
 ```
 
-E.g., to produce the previously mentioned trace result, the command should be `node cli.js trace /path/to/db-dir typescript/declaration-merging max-count-of-merging-elements -i 0`.
+E.g., to produce the previously mentioned trace result, the command should be:
 
-There are also some pattern summarizations have nothing to do with the max metric value, but require sampling code riview. For example, the result JSON shows that there are developers using declaration merging on three different entity types (that is, `ClassDeclaration,InterfaceDeclaration,ModuleDeclaration` in result JSON line 205253), and we want to see the source code that results in this weird metric result, we could use the command `node cli.js trace /path/to/db-dir/ typescript/declaration-merging types/ClassDeclaration,InterfaceDeclaration,ModuleDeclaration -s 2024` which gives us a GitHub link `https://github.com/pixijs/pixijs/blob/13a1ad357b61393c3f11d4de9b11d346b36e1946/packages/loaders/src/LoaderResource.ts#L98`. This example drives us summarize the corresponding code smell pattern as listed in the 13th row of the in paper Table 3.
+```bash
+node cli.js trace /path/to/db-dir typescript/declaration-merging max-count-of-merging-elements -i 0
+```
+
+There are also some pattern summarizations have nothing to do with the max metric value, but require sampling code riview. For example, the result JSON shows that there are developers using declaration merging on three different entity types (that is, `ClassDeclaration,InterfaceDeclaration,ModuleDeclaration` in result JSON line 205253), and we want to see the source code that results in this weird metric result, we could use the command
+
+```bash
+node cli.js trace /path/to/db-dir/ typescript/declaration-merging types/ClassDeclaration,InterfaceDeclaration,ModuleDeclaration -s 2024
+```
+
+which gives us a GitHub link
+
+```text
+https://github.com/pixijs/pixijs/blob/13a1ad357b61393c3f11d4de9b11d346b36e1946/packages/loaders/src/LoaderResource.ts#L98
+```
+
+This example drives us summarize the corresponding code smell pattern as listed in the 13th row of the in-paper Table 3.
 
 Please note that we did't implement cooresponding trace-back functionality for all metrics, refer to the below table to know which metrics do we support.
 
@@ -398,10 +466,12 @@ Please note that we did't implement cooresponding trace-back functionality for a
 | typescript/overridden-type-parameter | type-parameters-in-overriding-usage |
 | variable-declaration/comma-elision | max-count-of-comma-elisions-in-one-declaration |
 | variable-declaration/declaration-list | max-count-of-list-length |
+
+> Trace-able metrics like `fancy-tagged-tag-types/*` that ends with the wildcard symbol `*` means you can attach any valid type strings as long as it were presented in the result JSON. For example, for this metric, you can attach `PropertyAccessExpression`, `ObjectLiteralExpression`, and `CallExpression`, etc. as listed in the result JSON line 86066~86073.
 </details>
 
 ## Questionnaire Survey Disclaimer
 
-As described in paper Section 3.3, we conducted questionnaire survey on several experienced developers to validate our findings on three code smell like feature usage patterns. The survey structure is listed in Section 3.3, and feature detail fact questions are listed in Table 4. In paper Table 4 also exhibits analyzed survey results, and in paper Section 4.4.2 interpreted this table.
+As described in the in-paper Section 3.3, we conducted questionnaire survey on several experienced developers to validate our findings on three code smell like feature usage patterns. The survey structure is listed in Section 3.3, and feature detail fact questions are listed in Table 4. In-paper Table 4 also exhibits analyzed survey results, and in-paper Section 4.4.2 interpreted this table.
 
 The raw data of the survey was not open-sourced in this repository since it was sensitive data in the company.
