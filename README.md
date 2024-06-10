@@ -24,7 +24,9 @@ This repository contains tools, data, and scripts for our work **DiTU: Exploring
 |  |- cli.js                // Toolchain command line interface
 ```
 
-## ID Mapping Table
+## Fixture Description
+
+### ID Mapping Table
 
 This table lists the mapping relation between in-paper feature ID and its corresponding fixture in this repository.
 
@@ -136,6 +138,14 @@ Tags provide extra prospect for categorize faetures.
 
 1. Can append `(ES2022)` or `(TS5.0)` or both with comma separation to indicate the language version that introduces this feature.
 
+### GodelScript Query Script Naming Pattern
+
+| Naming Prefix | Description |
+| --- | --- |
+| `get-` + *name* | A functional query script. The query result JSON will also be named with the *name*. |
+| `use-` + *name* | A placeholder indicating this feature just borrowed a query script named `get-*name*.gdl` from another feature. |
+| `ignore-` + *reason* | A placeholder indicating this feature is ignored due to the *reason*. |
+
 ## Result Interpretation
 
 In the statistical analysis result JSON [`240221-result.json`](./repo-list/240221-results.json):
@@ -205,6 +215,23 @@ To continue replicate our experiment process, you need to install CodeFuse-Query
 After successifully installed CodeFuse-Query, please also:
 1. Add the installation directory to the environment variable `PATH`;
 2. run `node cli.js gather` to let the script setup GodelScript dependency automatically for you.
+
+### CodeFuse-Query Cheat Sheet
+
+To generate the Code-as-Data dabase for a local repository, run
+
+```bash
+sparrow database create --data-language-type=javascript -s /path/to/repo -o /path/to/storage
+```
+
+The generated database file `coref_javascript_src.db` is a standard SQLite database, and you can open it with any SQLite viewer, like [this VSCode extension](https://marketplace.visualstudio.com/items?itemName=yy0931.vscode-sqlite3-editor).
+
+To execute a GodelScript query script on a specified database, run
+
+```bash
+sparrow query run --format json --database /path/to/db --gdl /path/to/script.gdl --output /path/to/output/dir
+```
+
 </details>
 
 <details>
@@ -326,7 +353,7 @@ on the first commit of the first repository, corresponding result JSONs can be f
 <summary>Metric Calculation</summary>
 
 > [!NOTE]
-> You can download our pre-uploaded raw query JSON results at [https://doi.org/10.5281/zenodo.11544610](https://doi.org/10.5281/zenodo.11544610). The download zip takes ~3GB, and **the unzipped files takes ~180GB**.
+> You can download our pre-uploaded raw query JSON results at [https://doi.org/10.5281/zenodo.11544610](https://doi.org/10.5281/zenodo.11544610). It contains only query JSON results, whereas Code-as-Data databases were not included. If you want to replicate the process of query execution, you need to generate the database manually as described in previous steps. The download zip takes ~3GB, and **the unzipped files takes ~180GB**.
 
 After all query JSON results are generated, the next step is to calculate various metrics, as described in the in-paper Section 2.3. To do so, run:
 
