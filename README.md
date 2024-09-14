@@ -519,23 +519,33 @@ As described in the in-paper Section 6 (Threats to validity), we conducted quest
 ##### I-1 [Single Choice]: Self-rating in to what extent are you familiar with JavaScript?
 
 A. Normal
+
 B. Relatively familiar
+
 C. Familiar
+
 D. Familiar, and also know language's new versions/feature proposals
 
 ##### I-2 [Single Choice]: Self-rating in to what extent are you familiar with TypeScript?
 
 A. Not familiar
+
 B. Normal
+
 C. Relatively familiar
+
 D. Familiar
+
 E. Familiar, and also know language's new versions/feature proposals
 
 ##### I-3 [Multi Choice]: Select the most used language usage domains that apply to you.
 
 A. Frontend development
+
 B. Backend Node.js development
+
 C. (Multi-end) Fundamental library development
+
 D. Others
 
 #### Section II: Feature Usage Rating
@@ -545,19 +555,25 @@ D. Others
 ###### II-A-1 [Single Choice]: Have you known and used ES6 variable destructuring pattern `let [a, b] = arr` and `let {a: b} = obj` before?
 
 A. Known and used
+
 B. Known but not used
+
 C. Neither known nor used
 
 ###### II-A-2 [Multi Choice]: The symbol `...` can pack rest properties/elements into a rest variable, and which of the following options are correct regarding to re-destructure a rest variable?
 
 A. `let [a, ...[b]] = arr`
+
 B. `let [a, ...{b}] = arr`
+
 C. `let {a, ...{b}} = obj`
+
 D. `let {a, ...[b]} = obj`
 
 <details>
 <summary>Answers</summary>
 A and B
+
 (It is considered to be correct only if both were selected.)
 </details>
 
@@ -570,12 +586,15 @@ A and B
 ###### II-B-1 [Single Choice]: Have you known and used `arguments[n]` to deal with variadic function argument list before?
 
 A. Known and used
+
 B. Known but not used
+
 C. Neither known nor used
 
 ###### II-B-2 [Single Choice]: Will the combing use of arguments variable and ES6 rest parameters result in a potential data synchronization problem? Which of the following option is true?
 
-A. There IS a data sync problem. `arguments[0] = newObj` won’t update `rest[0]` to newObj where the rest is declared as function 1114 func(...rest).
+A. There IS a data sync problem. `arguments[0] = newObj` won’t update `rest[0]` to newObj where the rest is declared as function `func(...rest)`.
+
 B. There IS NOT a data sync problem. Any change through one way will be automatically synced to another way.
 
 <details>
@@ -592,13 +611,17 @@ A
 ###### II-C-1 [Single choice]: Have you known and used `constructor(public param)` where the decorator `public` made parameter `param` also a class field before?
 
 A. Known and used
+
 B. Known but not used
+
 C. Neither known nor used
 
 ###### II-C-2 [Single Choice]: Considering the declaration `constructor(private param: string)` that makes `param` not only a parameter but also a class field, what options are correct about this?
 
 A. Due to the `private` decorator, class field `param` is truly private even in runtime, and can not be accessed via `<class instance name>.param`.
+
 B. The developer does not need to write explicit assignment `this.param = param` to store parameter value into corresponding class field.
+
 C. In ES2022 and above, the TypeScript decorator `private` will be compiled to `this.#param = param`, which will make field `param` truly runtime private.
 
 <details>
