@@ -649,7 +649,7 @@ B
 
 ### Survey Results
 
-> [!NOTICE]
+> [!NOTE]
 > This survey was conducted within a company, and restricted by the privacy policy, we can not provide the raw data. But we can provide the summarized results and analysis.
 
 #### Metadata
@@ -658,7 +658,7 @@ B
 | --- | --- |
 | Survey Participants | 18 |
 | Survey Completion Rate | 100% |
-| Familiarity to JavaScript and TypeScript | Normal (12), Familiar (8) |
+| Familiarity to JavaScript and TypeScript | Normal (11), Familiar (7) |
 | Development Domain | Frontend (12), Backend (6), Library (4), Others (2) |
 | Rating to the extent of feature corner cases | 3.4/5 |
 | Rating to the questionnaire | 2.6/5 |
