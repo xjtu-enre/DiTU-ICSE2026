@@ -54,8 +54,6 @@ This table lists the mapping relation between in-paper feature ID and its corres
 | **(MS-09)** Conform to monorepo paradigm | [fixtures/module-system/monorepo](./fixtures/module-system/monorepo/README.md) |
 | **(MS-10)** Declare subpath exports in package.json | [fixtures/module-system/subpath-exports](./fixtures/module-system/subpath-exports/README.md) |
 | **(MS-11)** Declare subpath import in package.json | [fixtures/module-system/subpath-imports](./fixtures/module-system/subpath-imports/README.md) |
-<!-- | **(OM-01)** Return new object in decorator | [fixtures/object-mechanism/decorator-return-new-function](./fixtures/object-mechanism/decorator-return-new-function/README.md) |
-| **(OM-02)** Dynamic class inheritance | [fixtures/object-mechanism/dynamic-heritage](./fixtures/object-mechanism/dynamic-heritage/README.md) | -->
 | **(OM-01)** Add property to first-class citizen | [fixtures/object-mechanism/first-class-citizen-modify-prop](./fixtures/object-mechanism/first-class-citizen-modify-prop/README.md) |
 | **(OM-02)** Reassign to first-class citizen’s name | [fixtures/object-mechanism/reassign-to-declaration-name](./fixtures/object-mechanism/reassign-to-declaration-name/README.md) |
 | **(OM-03)** Modify object’s prototype | [fixtures/object-mechanism/modify-prototype](./fixtures/object-mechanism/modify-prototype/README.md) |
@@ -561,7 +559,7 @@ D. `let {a, ...[b]} = obj`
 <summary>Answers</summary>
 A and B
 (It is considered to be correct only if both were selected.)
-</detains>
+</details>
 
 ###### II-A-3 [Rating]: To what extent do you suggest the usage as shown in the previous question? (In-paper pattern NRD)
 
@@ -583,7 +581,7 @@ B. There IS NOT a data sync problem. Any change through one way will be automati
 <details>
 <summary>Answers</summary>
 A
-</detains>
+</details>
 
 ###### II-B-3 [Rating]: To what extent do you suggest mixing the usage of `arguments` and `...rest` parameter? (In-paper pattern NRP)
 
@@ -606,7 +604,7 @@ C. In ES2022 and above, the TypeScript decorator `private` will be compiled to `
 <details>
 <summary>Answers</summary>
 B
-</detains>
+</details>
 
 ###### II-C-3 [Rating]: To what extent do you suggest the mixing usage of `constructor(public p0, p1, private 02)` where `p0` and `p2` are fields and `p1` is a parameter?
 
