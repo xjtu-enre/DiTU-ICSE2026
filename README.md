@@ -1,6 +1,6 @@
-# ASE24 Public Data for DiTU
+# Public Data for DiTU
 
-This repository contains tools, data, and scripts for our work **DiTU: Exploring Language Feature Usages in Real-World Codebases for JavaScript and TypeScript**. Reviewers can either validate experimental results or utilze these infrastructure to explore their own intrested language features.
+This repository contains tools, data, and scripts for our work **DiTU: Exploring Practical Language Feature Usages for JavaScript and TypeScript**. Reviewers can either validate experimental results or utilize the infrastructure to explore their own interested language features.
 
 ## Repository Structure
 
@@ -9,15 +9,15 @@ This repository contains tools, data, and scripts for our work **DiTU: Exploring
 |- README.md
 |- package.json             // For setup JavaScript environment
 |- repo-list
-|  |- 240221.csv            // Project repository list, as described in paper Section 3.2
+|  |- 240221.csv            // Project repository list, as described in paper Section 3.2.1
 |  |- 240221-summary.csv    // Experimental meta data (mostly query execution duration)
-|  |- 240221-results.json   // Statistical metric analysis results, as described in paper Section 2.3
-|  |- 240221-trends.png     // More feature usage trends that in-paper Table 2 didn't exhibit due to page limit
-|- fixtures                 // Feature READMEs, GodelScript query scripts, post-process scripts
+|  |- 240221-results.json   // Statistical metric analysis results, as described in paper Section 2.3.3
+|  |- 240221-trends.png     // Full feature usage trends that in-paper Figure 5 didn't exhibit due to page limit
+|- fixtures                 // Feature READMEs, GodelScript query scripts, and post-process scripts
 |  |- class                 // A feature group
 |  |  |- fancy-member-name  // A feature under the 'Class' group, in-paper ID is CD-02
-|  |  |  |- README.md       // Feature description, unit tests, metrics, tags (for multi-dementional categorization, not used in paper)
-|  |  |  |- index.js        // Post-process JavaScript script
+|  |  |  |- README.md       // Feature description, unit tests, metrics, tags (new, corner, etc.)
+|  |  |  |- index.js        // JavaScript Post-process script
 |  |  |  |- use-all-class-members.gdl  // GodelScript query script, see below on how to interprete the naming pattern
 |  |- ...
 |- src
@@ -54,12 +54,12 @@ This table lists the mapping relation between in-paper feature ID and its corres
 | **(MS-09)** Conform to monorepo paradigm | [fixtures/module-system/monorepo](./fixtures/module-system/monorepo/README.md) |
 | **(MS-10)** Declare subpath exports in package.json | [fixtures/module-system/subpath-exports](./fixtures/module-system/subpath-exports/README.md) |
 | **(MS-11)** Declare subpath import in package.json | [fixtures/module-system/subpath-imports](./fixtures/module-system/subpath-imports/README.md) |
-| **(OM-01)** Return new object in decorator | [fixtures/object-mechanism/decorator-return-new-function](./fixtures/object-mechanism/decorator-return-new-function/README.md) |
-| **(OM-02)** Dynamic class inheritance | [fixtures/object-mechanism/dynamic-heritage](./fixtures/object-mechanism/dynamic-heritage/README.md) |
-| **(OM-03)** Add property to first-class citizen | [fixtures/object-mechanism/first-class-citizen-modify-prop](./fixtures/object-mechanism/first-class-citizen-modify-prop/README.md) |
-| **(OM-04)** Reassign to first-class citizen’s name | [fixtures/object-mechanism/reassign-to-declaration-name](./fixtures/object-mechanism/reassign-to-declaration-name/README.md) |
-| **(OM-05)** Modify object’s prototype | [fixtures/object-mechanism/modify-prototype](./fixtures/object-mechanism/modify-prototype/README.md) |
-| **(OM-06)** Override predefined methods by `Symbol` | [fixtures/object-mechanism/symbols](./fixtures/object-mechanism/symbols/README.md) |
+<!-- | **(OM-01)** Return new object in decorator | [fixtures/object-mechanism/decorator-return-new-function](./fixtures/object-mechanism/decorator-return-new-function/README.md) |
+| **(OM-02)** Dynamic class inheritance | [fixtures/object-mechanism/dynamic-heritage](./fixtures/object-mechanism/dynamic-heritage/README.md) | -->
+| **(OM-01)** Add property to first-class citizen | [fixtures/object-mechanism/first-class-citizen-modify-prop](./fixtures/object-mechanism/first-class-citizen-modify-prop/README.md) |
+| **(OM-02)** Reassign to first-class citizen’s name | [fixtures/object-mechanism/reassign-to-declaration-name](./fixtures/object-mechanism/reassign-to-declaration-name/README.md) |
+| **(OM-03)** Modify object’s prototype | [fixtures/object-mechanism/modify-prototype](./fixtures/object-mechanism/modify-prototype/README.md) |
+| **(OM-04)** Override predefined methods by `Symbol` | [fixtures/object-mechanism/symbols](./fixtures/object-mechanism/symbols/README.md) |
 | **(AS-01)** Create object with API call instead of literal | [fixtures/semantic/api-over-literal](./fixtures/semantic/api-over-literal/README.md) |
 | **(AS-02)** Call `React.createElement()` manually instead of using JSX| [fixtures/framework/createelement-over-jsx](./fixtures/framework/createelement-over-jsx/README.md) |
 | **(AS-03)** Declare React function component instead of class component | [fixtures/framework/react-component](./fixtures/framework/react-component/README.md) |
@@ -79,9 +79,9 @@ This table lists the mapping relation between in-paper feature ID and its corres
 | **(MI-02)** Use tag function in template literal | [fixtures/misc/tag-function](./fixtures/misc/tag-function/README.md) |
 | **(MI-03)** Declare standalone block| [fixtures/misc/standalone-block](./fixtures/misc/standalone-block/README.md) |
 
-There are also 4 features listed but not analyzed due to query tool did not support them:
+There are also 4 features listed but not analyzed due to query engine did not support them:
 
-| Feature Description | Directory | Unsupport Reason |
+| Feature Description | Directory | Reason |
 | --- | --- | --- |
 | Use keyword `using` | [fixtures/variable-declaration/use-keyword-using](./fixtures/variable-declaration/use-keyword-using/README.md) | Parser version 4.5 < 5.2 |
 | Declare class `accessor` member | [fixtures/class/accessor](./fixtures/class/accessor/README.md) | Parser version 4.5 < 4.9 |
@@ -92,9 +92,9 @@ There are also 4 features listed but not analyzed due to query tool did not supp
 
 Every feature README consists of 3 parts.
 
-#### Patterns (Not refers to usage pattern in the paper)
+#### Patterns (Not refers to 'usage pattern' in-paper)
 
-This section lists (almost) all available code that matches this feature based on the language spec, and serves as unit test and demonstration while implementing the query script.
+This section lists (almost) all available code that matches this feature based on the language spec, and serves as unit test (as described in in-paper Section 4.1) and demonstration while implementing the query script.
 
 #### Metrics
 
@@ -121,7 +121,7 @@ Metrics can be appended with decorators to indicate additional information.
 
 #### Tags
 
-Tags provide extra prospect for categorize faetures.
+Tags provide extra prospect for categorize features.
 
 | Tag | Description |
 | --- | --- |
@@ -140,6 +140,8 @@ Tags provide extra prospect for categorize faetures.
 
 ### GodelScript Query Script Naming Pattern
 
+> The mapping relation between query script and language feature is not strictly one-to-one, that is, some scripts may be reused by multiple features, and some features may depend on multiple scripts.
+
 | Naming Prefix | Description |
 | --- | --- |
 | `get-` + *name* | A functional query script. The query result JSON will also be named with the *name*. |
@@ -153,47 +155,58 @@ In the statistical analysis result JSON [`240221-result.json`](./repo-list/24022
 > [!WARNING]
 > This JSON file contains too many lines, to ensure the best viewing experience, you are suggested to open it with an editor that support large-file collapse (like WebStorm).
 
-* Each top-level entry represents a feature, e.g., `variable-declaration/comma-elision` at line 2 corresponds to the feature VD-05.
+* Each top-level entry represents a feature, e.g., `variable-declaration/comma-elision` in line 2 corresponds to the feature VD-05.
   > The entry key follows the `<Feature group key>/<Feature key>` pattern, where a `key` is the directory name that can be found in the above mapping table.
 
-* In a top-level object, several properties alongwith their values are presented, the naming pattern is loosely coupled with the metric we designed (As descripted in paper Section 2.3).
+* In a top-level object, several properties along with their values are presented, the naming pattern is loosely coupled with the metric we designed (As described in in-paper Section 2.3.3).
   * Property whose name started with `all-` and the next adjacent property (the metric **Usage Times**) are used to calculate the metric **Usage Frequency**, e.g., the usage frequency of feature VD-05 can be calculated by `array-destructuring-with-elision/sum (L5269)` / `all-array-destructuring-variable-declarations(L2635)`.
   * Property whose name started with `feature-usage-` is the metric **Usage Frequency** (So the above caluculation process was already performed).
-    > Note that some features did not possess their corresponding usage frequency metric, this is because it was difficult for them to assign a proper denominator (property `all-`) to perform the division, e.g., TS-10 declaration merging allows variaous entity types to participant in and it is not practical to sum them all.
+    > Note that some features did not possess their corresponding usage frequency metric, this is because it was difficult for them to assign a proper denominator (property `all-`) to perform the division, e.g., TS-10 declaration merging allows various entity types to participant in and it is not practical to sum them all.
   * Property whose name started with `max-count-of-` is the metric **Max Count**, and the concrete meaning should be self-explanatory enough through the property name.
   * Property whose name started with `type(s)-` is the metric **Usage Context Type** or **Syntax Node Type** based on its concrete meaning.
 
-In the paper, we mainly utilized the property `feature-usage-` to visualize various feature usage trends, and in text we also selectively chose some metrics to demonstrate the fine detail of features. Due to the page limit, the in-paper Table 2 only exhibit representative feature usage trends, and all 38 feature usage trends can be seen in this repository [here](./repo-list/240221-trends.png).
+In the paper, we mainly utilized the property `feature-usage-` to visualize various feature usage trends, and in text we also selectively chose some metrics to demonstrate the fine detail of features. Due to the page limit, the in-paper Figure 5 only exhibit representative feature usage trends, and all 44 feature usage trends can be seen in this repository [here](./repo-list/240221-trends.png).
 
 > [!NOTE]
-> As described in the in-paper Table 2's footnote, some features did not come with a corresponding chart because it was hard to assign a proper denominator to calculate the usage frequency.
+> Trend plots are not color-categorized as in-paper (Increasing/Decreasing are all colored in blue). All trends exhibit **average usage frequency** EXCEPT for feature MS-09, MS-10, OM-03, OM-04, AS-02, TS-10, and MI-03, **usage times** is used since it is hard to determine proper denominators for some of them to calculate a division. That is, Y-axis of these features can go beyond 100.
 
 ## Getting Started
 
 This section will guide you to replicate our experiment and analysis from cloning repository to final analysis and code review by statistic trace back. We provide multiple checkpoints in this whole process so that you can either start from scratch or use our pre-uploaded data.
 
 > [!CAUTION]
-> This experiment is extremly space-consuming. The Code-as-Data storage for ~3k repositories takes ~180GB disk space. If you want to fully replicate our experiment results, you should prepare **an SSD disk with at least 256GB empty space**.
+> This experiment is extremely space-consuming, as visualized in Figure 4a. The Code-as-Data storage for ~3k repositories takes ~180GB disk space. If you want to fully replicate our experiment results, you should prepare **an SSD with at least 256GB empty space**.
 
 Almost all steps rely on the centric command line interface [`src/cli.js`](./src/cli.js), and you should have `Node.js` available in your system and install dependency packages by running `npm i` at the root directory of this repo. All available commands of `cli.js` are listed below, and some of them will be used in the following step-by-step tutorials.
 
 ```text
 Commands:
   stat [options]                               Print fixture statistics and extract test cases
-  gather                                       Gather all Godel scripts to 'lib' dir and inject custom Godel lib file to Sparrow and rebuild it
-  fetch-repo [options] <dir>                   Clone repos from GitHub using the pre-specified repo list csv file
+  gather                                       Gather all Godel scripts to 'lib' dir and inject
+                                               custom Godel lib file to Sparrow and rebuild it
+  fetch-repo [options] <dir>                   Clone repos from GitHub using the pre-specified repo
+                                               list csv file
   create-db [options] <repo-dir> <db-dir>      Create Sparrow DB for each repo in the given dir
   check [options] <repo-dir> <db-dir>          Check the data integrity of repos and dbs
-  calc-loc [options] <repo-dir> <db-dir>       Calculate LoC of each repo in the given dir and save to its db directory
-  get-repo-meta [options] <repo-dir> <db-dir>  Retrieve meta data of repo that has successfully created db by invoking standalone JS script
+  calc-loc [options] <repo-dir> <db-dir>       Calculate LoC of each repo in the given dir and save
+                                               to its db directory
+  get-repo-meta [options] <repo-dir> <db-dir>  Retrieve meta data of repo that has successfully
+                                               created db by invoking standalone JS script
   run-godel [options] <db-dir>                 Run Godel scripts on each db in the given dir
-                                               This command requires 'gather' command to be manually executed first
-  post-process [options] <db-dir>              Invoke post process JS scripts to process Godel's output and generate final metric results
-  analyze <db-dir>                             Invoke analyze functions of each feature on full db results to generate final metric results
+                                               This command requires 'gather' command to be
+                                               manually executed first
+  post-process [options] <db-dir>              Invoke post process JS scripts to process Godel's
+                                               output and generate metric results
+  analyze [options] <db-dir>                   Invoke analyze functions of each feature on full db
+                                               results to generate final metric results
   trace [options] <db-dir> <feature> <metric>  Trace the raw data source of a specific metric
                                                Requires '../repo-list/xxx-results.json' to exist
   summary [options] <db-dir>                   Collect all log data and generate a summary report
                                                Requires '../lib' holds all godel scripts
+  sample [options] <db-dir>                    Sample the data at file level to generate a smaller
+                                               data set for manual inspection
+  sample-merge                                 Merge sample results
+  help [command]                               display help for command
 ```
 
 > [!IMPORTANT]
@@ -212,13 +225,13 @@ To continue replicate our experiment process, you need to install CodeFuse-Query
 > [!NOTE]
 > CodeFuse-Query works on Linux and macOS only. Though Windows is not supported, WSL can be used (Follow [this issue](https://github.com/codefuse-ai/CodeFuse-Query/issues/36#issuecomment-1975027164) to address a missing lib issue in WSL).
 
-After successifully installed CodeFuse-Query, please also:
+After successfully installed CodeFuse-Query, please also:
 1. Add the installation directory to the environment variable `PATH`;
-2. run `node cli.js gather` to let the script setup GodelScript dependency automatically for you.
+2. run `node cli.js gather` to let the script setup GodelScript library dependency automatically.
 
 ### CodeFuse-Query Cheat Sheet
 
-To generate the Code-as-Data dabase for a local repository, run
+To generate the Code-as-Data database for a local repository, run
 
 ```bash
 sparrow database create --data-language-type=javascript -s /path/to/repo -o /path/to/storage
@@ -299,7 +312,7 @@ Options:
 
 > [!WARNING]
 > This step could be time-consuming depending on the repository size and whether SSD or HDD are you using.
-> 1. CodeFuse-Query has an 1 hour multdown threshold hard-coded for database generation;
+> 1. CodeFuse-Query has an 1 hour meltdown threshold hard-coded for database generation;
 > 2. You are highly suggested to use an SSD to store code repositories and generated databases.
 </details>
 
@@ -407,7 +420,7 @@ After executing this command, a `results.json` will be generated under correspon
 > [!NOTE]
 > You can find our pre-generated statistical analysis results at [`240221-results.json`](./repo-list/240221-results.json), but you need a better editor to open and view it since it contains too many lines, as described in [Result Interpretation](#result-interpretation) above.
 
-After metrics are calculated for each database, the next step is add **time** as a new dimention for statistical analysis and the reveal of feature usage trends. To do so, run
+After metrics are calculated for each database, the next step is add **time** as a new dimension for statistical analysis and the reveal of feature usage trends. To do so, run
 
 ```bash
 node cli.js analyze /path/to/db-dir
@@ -456,7 +469,7 @@ E.g., to produce the previously mentioned trace result, the command should be:
 node cli.js trace /path/to/db-dir typescript/declaration-merging max-count-of-merging-elements -i 0
 ```
 
-There are also some pattern summarizations have nothing to do with the max metric value, but require sampling code riview. For example, the result JSON shows that there are developers using declaration merging on three different entity types (that is, `ClassDeclaration,InterfaceDeclaration,ModuleDeclaration` in result JSON line 205253), and we want to see the source code that results in this weird metric result, we could use the command
+There are also some pattern summarizations have nothing to do with the max metric value, but require sampling code review. For example, the result JSON shows that there are developers using declaration merging on three different entity types (that is, `ClassDeclaration,InterfaceDeclaration,ModuleDeclaration` in result JSON line 205253), and we want to see the source code that results in this weird metric result, we could use the command
 
 ```bash
 node cli.js trace /path/to/db-dir/ typescript/declaration-merging types/ClassDeclaration,InterfaceDeclaration,ModuleDeclaration -s 2024
@@ -470,7 +483,7 @@ https://github.com/pixijs/pixijs/blob/13a1ad357b61393c3f11d4de9b11d346b36e1946/p
 
 This example drives us summarize the corresponding code smell pattern as listed in the 13th row of the in-paper Table 3.
 
-Please note that we did't implement cooresponding trace-back functionality for all metrics, refer to the below table to know which metrics do we support.
+Please note that we did't implement corresponding trace-back functionality for all metrics, refer to the below table to know which metrics do we support.
 
 | Feature Key | Trace-able Metrics |
 |---|---|
@@ -497,8 +510,148 @@ Please note that we did't implement cooresponding trace-back functionality for a
 > Trace-able metrics like `fancy-tagged-tag-types/*` that ends with the wildcard symbol `*` means you can attach any valid type strings as long as it were presented in the result JSON. For example, for this metric, you can attach `PropertyAccessExpression`, `ObjectLiteralExpression`, and `CallExpression`, etc. as listed in the result JSON line 86066~86073.
 </details>
 
-## Questionnaire Survey Disclaimer
+## Small Questionnaire Survey
 
-As described in the in-paper Section 3.3, we conducted questionnaire survey on several experienced developers to validate our findings on three code smell like feature usage patterns. The survey structure is listed in Section 3.3, and feature detail fact questions are listed in Table 4. In-paper Table 4 also exhibits analyzed survey results, and in-paper Section 4.4.2 interpreted this table.
+As described in the in-paper Section 6 (Threats to validity), we conducted questionnaire survey on several experienced developers to validate our findings on three code smells.
 
-The raw data of the survey was not open-sourced in this repository since it was sensitive data in the company.
+### Questionnaire Structure
+
+#### Section I: Basic Information
+
+##### I-1 [Single Choice]: Self-rating in to what extent are you familiar with JavaScript?
+
+A. Normal
+B. Relatively familiar
+C. Familiar
+D. Familiar, and also know language's new versions/feature proposals
+
+##### I-2 [Single Choice]: Self-rating in to what extent are you familiar with TypeScript?
+
+A. Not familiar
+B. Normal
+C. Relatively familiar
+D. Familiar
+E. Familiar, and also know language's new versions/feature proposals
+
+##### I-3 [Multi Choice]: Select the most used language usage domains that apply to you.
+
+A. Frontend development
+B. Backend Node.js development
+C. (Multi-end) Fundamental library development
+D. Others
+
+#### Section II: Feature Usage Rating
+
+##### Part A: Destructuring pattern in variable declaration (In-paper feature VD-04)
+
+###### II-A-1 [Single Choice]: Have you known and used ES6 variable destructuring pattern `let [a, b] = arr` and `let {a: b} = obj` before?
+
+A. Known and used
+B. Known but not used
+C. Neither known nor used
+
+###### II-A-2 [Multi Choice]: The symbol `...` can pack rest properties/elements into a rest variable, and which of the following options are correct regarding to re-destructure a rest variable?
+
+A. `let [a, ...[b]] = arr`
+B. `let [a, ...{b}] = arr`
+C. `let {a, ...{b}} = obj`
+D. `let {a, ...[b]} = obj`
+
+<details>
+<summary>Answers</summary>
+A and B
+(It is considered to be correct only if both were selected.)
+</detains>
+
+###### II-A-3 [Rating]: To what extent do you suggest the usage as shown in the previous question? (In-paper pattern NRD)
+
+0---5
+
+##### Part B: Use pre-defined variable `arguments` in a function (In-paper feature FD-02)
+
+###### II-B-1 [Single Choice]: Have you known and used `arguments[n]` to deal with variadic function argument list before?
+
+A. Known and used
+B. Known but not used
+C. Neither known nor used
+
+###### II-B-2 [Single Choice]: Will the combing use of arguments variable and ES6 rest parameters result in a potential data synchronization problem? Which of the following option is true?
+
+A. There IS a data sync problem. `arguments[0] = newObj` won’t update `rest[0]` to newObj where the rest is declared as function 1114 func(...rest).
+B. There IS NOT a data sync problem. Any change through one way will be automatically synced to another way.
+
+<details>
+<summary>Answers</summary>
+A
+</detains>
+
+###### II-B-3 [Rating]: To what extent do you suggest mixing the usage of `arguments` and `...rest` parameter? (In-paper pattern NRP)
+
+0---5
+
+##### Part C: Class constructor parameter and field (In-paper feature TS-03)
+
+###### II-C-1 [Single choice]: Have you known and used `constructor(public param)` where the decorator `public` made parameter `param` also a class field before?
+
+A. Known and used
+B. Known but not used
+C. Neither known nor used
+
+###### II-C-2 [Single Choice]: Considering the declaration `constructor(private param: string)` that makes `param` not only a parameter but also a class field, what options are correct about this?
+
+A. Due to the `private` decorator, class field `param` is truly private even in runtime, and can not be accessed via `<class instance name>.param`.
+B. The developer does not need to write explicit assignment `this.param = param` to store parameter value into corresponding class field.
+C. In ES2022 and above, the TypeScript decorator `private` will be compiled to `this.#param = param`, which will make field `param` truly runtime private.
+
+<details>
+<summary>Answers</summary>
+B
+</detains>
+
+###### II-C-3 [Rating]: To what extent do you suggest the mixing usage of `constructor(public p0, p1, private 02)` where `p0` and `p2` are fields and `p1` is a parameter?
+
+0---5
+
+#### Section III: Ending Questions
+
+##### III-1 [Rating]: To what extend do you think that these three features covered in this questionnaire are corner cases? The bigger the rating, the more you agree with the corner case.
+
+0---5
+
+##### III-2 [Rating]: Your rating to the whole questionnaire? The bigger the rating, the more active you think you learned something; the lower the rating, the fewer value you consider.
+
+0---5
+
+##### III-3 [Text]: Any comments or suggestions on this questionnaire.
+
+(Any text input)
+
+### Survey Results
+
+> [!NOTICE]
+> This survey was conducted within a company, and restricted by the privacy policy, we can not provide the raw data. But we can provide the summarized results and analysis.
+
+#### Metadata
+
+| Item | Value |
+| --- | --- |
+| Survey Participants | 18 |
+| Survey Completion Rate | 100% |
+| Familiarity to JavaScript and TypeScript | Normal (12), Familiar (8) |
+| Development Domain | Frontend (12), Backend (6), Library (4), Others (2) |
+| Rating to the extent of feature corner cases | 3.4/5 |
+| Rating to the questionnaire | 2.6/5 |
+
+#### Feature Usages
+
+| Question: Feature | Feature Awareness | Used Feature Before | Fact Question Correctness (Normal Dev) | Fact Question Correctness (Familiar Dev) | Pattern Rating |
+| --- | --- | --- | --- | --- | --- |
+| I: VD-04 | 83.0% | 66.7% | 9.1% | 0% | 2.0/5 |
+| II: FD-02 | 55.6% | 44.4% | 72.7% | 85.7% | 1.2/5 |
+| III: TS-03 | 50.0% | 38.9% | 18.2% | 28.6% | 1.8/5 |
+
+#### Observations
+
+First, developers exhibit insufficient awareness and usage experiences among common and uncommon language features. For example, 9 out of 18 developers (50.0\%) were aware of the parameter field feature (TS-03), and only  of them had used it before. Unexpectedly, not all developers are aware of the rest variable feature (VD-04), which was introduced in ES2018.
+
+Second, developers exhibit low accuracy on subtle feature details. On what destructure patterns are allowed to nest and whether the TypeScript `private` modifier works at runtime, less than 30\% of developers can correctly distinguish the true answer, and there is no significant difference between senior developers and expert developers, even if they declared to be familiar with the language specification. However intuitively, they all agreed with our judgment on the badness of these feature usage patterns (ratings were all below 2.0).

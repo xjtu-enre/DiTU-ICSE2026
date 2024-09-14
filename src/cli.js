@@ -10,19 +10,22 @@
  *    (To use cloc, perl should be installed)
  */
 
-import { Command, Option } from 'commander';
-import { copyFile, mkdir, readFile, rm, stat as fsstat, writeFile } from 'node:fs/promises';
-import { createReadStream } from 'fs';
-import { parse } from 'csv-parse';
-import { parse as parseSync } from 'csv-parse/sync';
-import { stringify } from 'csv-stringify';
+import {Command, Option} from 'commander';
+import {copyFile, mkdir, readFile, rm, stat as fsstat, writeFile} from 'node:fs/promises';
+import {createReadStream} from 'fs';
+import {parse} from 'csv-parse';
+import {parse as parseSync} from 'csv-parse/sync';
+import {stringify} from 'csv-stringify';
 import path from 'node:path';
 import postProcess from './post-process/index.js';
-import { currTimestamp, exec, nodeExec, readdirNoDS } from './utils.js';
+import {currTimestamp, exec, nodeExec, readdirNoDS} from './utils.js';
 import stat from './stat.js';
-import { createWriteStream } from 'node:fs';
+import {createWriteStream} from 'node:fs';
 import trace from './post-process/trace.js';
 import seed from 'seed-random';
+import GODELMETA from './godel-meta.js';
+import {groupCountBy} from '../fixtures/_utils/post-process.js';
+import {filter} from './post-process/load-data.js';
 
 const LIST_FILE_PATH = '../repo-list/240221.csv';
 
@@ -39,10 +42,11 @@ cli.command('stat')
     let
       featureCount = 0,
       metricCount = 0,
+      unitTestCount = {},
       featureQueryableCount = 0,
       featureImplementedCount = 0,
       featureIgnoredCount = 0,
-      actualGdlScriptCount = 1; // Manually add `_utils/Ditu.gdl` to the count
+      actualGdlScriptCount = 1; // Manually add `_utils/Enrets.gdl` to the count
 
     Object.keys(fixtures)
       .sort((a, b) => a < b)
@@ -66,6 +70,8 @@ cli.command('stat')
 
             featureCount += 1;
             metricCount += obj['metrics'].length;
+            unitTestCount[fixtureGroup] ??= 0;
+            unitTestCount[fixtureGroup] += obj.unitTests;
 
             if (obj.isIgnored) {
               featureIgnoredCount += 1;
@@ -91,6 +97,7 @@ cli.command('stat')
     console.log('\n');
     console.log(`Total features: ${featureCount}`);
     // console.log(`Total metrics: ${metricCount}`);
+    console.log(`Total unit tests: ${JSON.stringify(unitTestCount)}`);
     console.log(`Ignored features: ${featureIgnoredCount}`);
     console.log(`Queryable features: ${featureQueryableCount}`);
     console.log(`Implemented features: ${featureImplementedCount}`);
@@ -120,7 +127,7 @@ cli.command('gather')
     }
 
     try {
-      await rm('../lib', { recursive: true });
+      await rm('../lib', {recursive: true});
     } catch {
       /* Do noting */
     } finally {
@@ -136,8 +143,8 @@ cli.command('gather')
 
     console.log('Copying custom lib file and rebuild Sparrow');
     // stdout ends with '\n'
-    const { stdout } = await nodeExec('which sparrow');
-    await copyFile('../fixtures/_utils/Ditu.gdl', path.join(stdout.slice(0, -2), '../lib-script/coref/javascript/Ditu.gdl'));
+    const {stdout} = await nodeExec('which sparrow');
+    await copyFile('../fixtures/_utils/Enrets.gdl', path.join(stdout.slice(0, -2), '../lib-script/coref/javascript/Enrets.gdl'));
     await exec('sparrow rebuild lib -lang javascript');
   });
 
@@ -203,8 +210,8 @@ cli.command('fetch-repo')
  *
  * FIXME: Temporarily solution: Merge the results of the same simple name repos
  */
-export async function getRepoAndCommits({ start, end, commits }) {
-  const csv = parseSync(await readFile(LIST_FILE_PATH), { columns: true });
+export async function getRepoAndCommits({start, end, commits}) {
+  const csv = parseSync(await readFile(LIST_FILE_PATH), {columns: true});
   const returned = {};
 
   for (const [index, repo] of csv.entries()) {
@@ -230,7 +237,7 @@ export async function getRepoAndCommits({ start, end, commits }) {
 }
 
 export async function db2RepoNameMap() {
-  const csv = parseSync(await readFile(LIST_FILE_PATH), { columns: true });
+  const csv = parseSync(await readFile(LIST_FILE_PATH), {columns: true});
   const returned = {};
 
   for (const repo of csv) {
@@ -247,7 +254,7 @@ export async function db2RepoNameMap() {
 }
 
 export async function getCommitDate() {
-  const csv = parseSync(await readFile(LIST_FILE_PATH), { columns: true });
+  const csv = parseSync(await readFile(LIST_FILE_PATH), {columns: true});
   const returned = {};
 
   for (const repo of csv.values()) {
@@ -283,8 +290,8 @@ export async function getCommitDate() {
   return returned;
 }
 
-export async function getDBSize(dbDir, { start, end, commits }) {
-  const repoCommitMap = await getRepoAndCommits({ start, end, commits });
+export async function getDBSize(dbDir, {start, end, commits}) {
+  const repoCommitMap = await getRepoAndCommits({start, end, commits});
 
   const data = {};
 
@@ -293,7 +300,7 @@ export async function getDBSize(dbDir, { start, end, commits }) {
       const name = repo + '@' + commit;
 
       try {
-        const { size } = await fsstat(path.join(dbDir, name, 'coref_javascript_src.db'));
+        const {size} = await fsstat(path.join(dbDir, name, 'coref_javascript_src.db'));
         data[name] = size / 1024 / 1024; // MB
       } catch (e) {
         // DB does not exist
@@ -343,7 +350,7 @@ cli.command('create-db')
         }
 
         console.log(`Creating sparrow db of ${name}`);
-        await exec(`git checkout ${commit} -f`, { cwd: path.join(repoDir, repo) });
+        await exec(`git checkout ${commit} -f`, {cwd: path.join(repoDir, repo)});
 
         try {
           const startTime = Date.now();
@@ -420,7 +427,7 @@ cli.command('check')
 
           if (opts.operation) {
             console.log('\tDeleting...');
-            await rm(path.join(dbDir, name), { recursive: true, force: true });
+            await rm(path.join(dbDir, name), {recursive: true, force: true});
           }
         }
       }
@@ -474,7 +481,7 @@ cli.command('calc-loc')
         }
 
         console.log(`Calculating LoC for DB '${name}'`);
-        await exec(`git checkout ${commit} -f`, { cwd: path.join(repoDir, repo) });
+        await exec(`git checkout ${commit} -f`, {cwd: path.join(repoDir, repo)});
 
         try {
           await exec(`npx cloc --include-lang=javascript,jsx,typescript --json --out=${path.join(dbPath, 'loc.json')} ${path.join(repoDir, repo)}`);
@@ -516,7 +523,7 @@ cli.command('get-repo-meta')
         }
 
         console.log(`Calculating meta data for DB '${name}'`);
-        await exec(`git checkout ${commit} -f`, { cwd: path.join(repoDir, repo) });
+        await exec(`git checkout ${commit} -f`, {cwd: path.join(repoDir, repo)});
         try {
           await exec(`node ../fixtures/_utils/repo-meta-scan.js ${path.join(repoDir, repo)} ${dbPath}`);
         } catch {
@@ -620,7 +627,7 @@ cli.command('run-godel')
           try {
             await exec(
               `sparrow query run --format json --database ${dbPath} --gdl ${scriptPath} --output ${dbPath}`,
-              { timeout: opts.timeout * 60 * 1000 },
+              {timeout: opts.timeout * 60 * 1000},
             );
             const endTime = Date.now();
 
@@ -658,7 +665,7 @@ cli.command('run-godel')
   });
 
 cli.command('post-process')
-  .description('Invoke post process JS scripts to process Godel\'s output and generate final metric results')
+  .description('Invoke post process JS scripts to process Godel\'s output and generate metric results')
   .argument('<db-dir>', 'The base dir where dbs are stored')
   .addOption(new Option('-s --start <start>', 'Start repo count').argParser(value => parseInt(value, 10)).default(1))
   .addOption(new Option('-e --end <end>', 'End repo count').argParser(parseInt))
@@ -670,25 +677,66 @@ cli.command('post-process')
 cli.command('analyze')
   .description('Invoke analyze functions of each feature on full db results to generate final metric results')
   .argument('<db-dir>', 'The base dir where dbs are stored')
-  .action(async dbDir => {
+  .addOption(new Option('-s --strict', 'Require all versions of a repository to exist'))
+  .action(async (dbDir, {strict}) => {
     const commitDate = await getCommitDate();
 
     const data = {};
 
-    let dbCount = 0;
-    // Assuming all results contain the same amount of features
-    for (const db of await readdirNoDS(dbDir)) {
-      dbCount += 1;
-      const res = JSON.parse(
-        await readFile(path.join(dbDir, db, 'results.json'), 'utf-8'),
-        function (k, v) {
-          if (k.startsWith('feature-usage-')) {
-            return v * 100;
-          } else {
-            return v;
+    let dbs = [];
+    if (strict) {
+      const csvRead = createReadStream(LIST_FILE_PATH.replace('.csv', '-summary.csv'))
+        .pipe(parse({
+          columns: true,
+        }));
+
+      let waitingList = [], currRepo = undefined, currFailed = false;
+      nextDB: for await (const db of csvRead) {
+        const repoName = db.name.split('@')[0];
+        if (currRepo !== repoName) {
+          currRepo = repoName;
+          waitingList?.forEach(w => dbs.push(w));
+          waitingList = [];
+        }
+
+        let failedFields = 0;
+        for (const [k, v] of Object.entries(db)) {
+          if (k !== 'name' && v !== 'EXISTING' && isNaN(parseFloat(v))) {
+            failedFields += 1;
+          }
+
+          if (failedFields > 5) {
+            waitingList = undefined;
+            continue nextDB;
           }
         }
-      );
+
+        waitingList?.push(db.name);
+      }
+    } else {
+      dbs = await readdirNoDS(dbDir);
+    }
+
+    let dbCount = 0;
+    // Assuming all results contain the same amount of features
+    for (const db of dbs) {
+      dbCount += 1;
+      let res;
+      try {
+        res = JSON.parse(
+          await readFile(path.join(dbDir, db, 'results.json'), 'utf-8'),
+          function (k, v) {
+            if (k.startsWith('feature-usage-')) {
+              return v * 100;
+            } else {
+              return v;
+            }
+          }
+        );
+      } catch (e) {
+        console.error(`Failed to parse JSON result of DB '${db}'`);
+        continue;
+      }
 
       const date = commitDate[db].toFixed(1);
 
@@ -805,7 +853,7 @@ cli.command('analyze')
     // TODO: Remove all entries if max is 0
 
     await writeFile(
-      LIST_FILE_PATH.replace('.csv', '-results.json'),
+      LIST_FILE_PATH.replace('.csv', '-results' + (strict ? '-s' : '') + '.json'),
       JSON.stringify(data, null, 2),
     );
   });
@@ -818,7 +866,7 @@ cli.command('trace')
   .addOption(new Option('-i --indices <index...>', 'The result index (of max source) to trace').argParser(parseArrayInt))
   .addOption(new Option('-f --full', 'Display full results inspect of its length'))
   .addOption(new Option('-s --shuffle <seed>', 'Shuffle the trace results and output only 10 of them for case study'))
-  .action(async (dbDir, feature, metric, { indices, full, shuffle }) => {
+  .action(async (dbDir, feature, metric, {indices, full, shuffle}) => {
     const data = JSON.parse(await readFile(LIST_FILE_PATH.replace('.csv', '-results.json'), 'utf-8'));
     const nameMap = await db2RepoNameMap();
 
@@ -875,9 +923,9 @@ cli.command('trace')
           return;
         }
 
-        seed(shuffle, { global: true });
+        seed(shuffle, {global: true});
         const previousIndices = [];
-        for (const i of Array.from({ length: 10 }, (_, i) => i)) {
+        for (const i of Array.from({length: 10}, (_, i) => i)) {
           let index = Math.floor(Math.random() * results.length);
           while (previousIndices.includes(index)) {
             index = Math.floor(Math.random() * results.length);
@@ -900,7 +948,7 @@ cli.command('summary')
   .description('Collect all log data and generate a summary report\nRequires \'../lib\' holds all godel scripts')
   .argument('<db-dir>', 'The base dir where dbs are stored')
   .addOption(new Option('-f --fragment <fragment...>', 'The table fragment to use'))
-  .action(async (dbDir, { fragment }) => {
+  .action(async (dbDir, {fragment}) => {
     const ALL_OPTS = {
       start: 1,
       end: 800,
@@ -947,7 +995,7 @@ cli.command('summary')
     for (const [name, size] of Object.entries(await getDBSize(dbDir, ALL_OPTS))) {
       data[name]['db-size'] = size;
     }
-    for (const f of await Promise.all(fragment?.map(async f => parseSync(await readFile(f), { columns: true }))) ?? []) {
+    for (const f of await Promise.all(fragment?.map(async f => parseSync(await readFile(f), {columns: true}))) ?? []) {
       for (const record of f) {
         if (record['db-size']) {
           data[record['name']]['db-size'] = record['db-size'];
@@ -1090,7 +1138,284 @@ cli.command('summary')
     csvWrite.pipe(createWriteStream(LIST_FILE_PATH.replace('.csv', '-summary.csv')));
 
     Object.entries(data).forEach(([name, entry]) => {
-      csvWrite.write({ name, ...entry });
+      csvWrite.write({name, ...entry});
+    });
+  });
+
+cli.command('sample')
+  .description('Sample the data at file level to generate a smaller data set for manual inspection')
+  .argument('<db-dir>', 'The base dir where dbs are stored')
+  .addOption(new Option('-b --batch <size>', 'The data set size for each feature').argParser(parseInt))
+  .addOption(new Option('-g --godelscripts [script...]', 'GodelScript to sample'))
+  .addOption(new Option('-s --shuffle <seed>', 'Shuffle the sample results with seed'))
+  .action(async (dbDir, {batch, godelscripts, shuffle}) => {
+    await mkdir('../sample', {recursive: true});
+    const dbs = await readdirNoDS(dbDir);
+    const nameMap = await db2RepoNameMap();
+    const CSVHEADER = [
+      /**
+       * -2 = Single line code file (Should be excluded in preprocessing)
+       * -1 = False Negative
+       * 0 = False Positive
+       * 1 = True Positive (Record extracted by the script)
+       */
+      'mask',
+      'fileIndex', 'recordIndex', 'url'
+    ];
+
+    godelscripts ??= (await readdirNoDS('../lib')).map(e => e.replace('.gdl', ''));
+
+    for (const script of godelscripts) {
+      if (!(script in GODELMETA)) {
+        continue;
+      }
+
+      const filePathFields = GODELMETA[script].FP;
+      if (filePathFields === undefined) {
+        console.log('Bad meta configuration: No file path field specified');
+        continue;
+      }
+
+      const recordCountGroupedByFile = Array.from({length: filePathFields.length}, () => ({}));
+      let dbCount = 0;
+      for (const db of dbs) {
+        dbCount += 1;
+        process.stdout.write(`(${dbCount}/${dbs.length})   \r`);
+        let json;
+        try {
+          json = JSON.parse(await readFile(path.join(dbDir, db, script + '.json'), 'utf-8'));
+          if (Array.isArray(json)) {
+            const [newArr, removed] = filter(json);
+            if (removed > 0) {
+              json = newArr;
+              console.log(`Removed ${removed} entries from ${script}.json in ${db}`);
+            }
+          } else {
+            for (const [k, v] of Object.entries(json)) {
+              if (Array.isArray(v)) {
+                const [newArr, removed] = filter(json[k]);
+                if (removed > 0) {
+                  json[k] = newArr;
+                  console.log(`Removed ${removed} entries from ${script}.json -> ${k} in ${db}`);
+                }
+              }
+            }
+          }
+        } catch {
+          continue;
+        }
+
+        for (const [slot, filePathField] of Object.entries(filePathFields)) {
+          if (filePathField === '.') {
+            const groupCount = groupCountBy(json, 'filePath');
+            Object.entries(groupCount).forEach(([filePath, count]) => {
+              recordCountGroupedByFile[parseInt(slot)][`${db}|${filePath}`] = count;
+            });
+          } else {
+            const segments = filePathField.split('/');
+            if (segments.length === 2) {
+              const groupCount = groupCountBy(json[segments[0]], segments[1] === '.' ? 'filePath' : segments[1]);
+              Object.entries(groupCount).forEach(([filePath, count]) => {
+                recordCountGroupedByFile[parseInt(slot)][`${db}|${filePath}`] = count;
+              });
+            }
+            // else if (segments.length === 4) {
+            //   // Local group - Local/Foreign key - Foreign group - Foreign file path
+            //   const mapping = new Map();
+            //   for (const [i, e] of json[segments[2]].entries()) {
+            //     mapping.set(e[segments[1]], i);
+            //   }
+            //   json[segments[0]].forEach(e => {
+            //     e.filePath = json[segments[2]][mapping.get(e[segments[1]])][segments[3] === '.' ? 'filePath' : segments[3]];
+            //   });
+            //
+            //   const groupCount = groupCountBy(json[segments[0]], 'filePath');
+            //   Object.entries(groupCount).forEach(([filePath, count]) => {
+            //     recordCountGroupedByFile[parseInt(slot)][`${db}|${filePath}`] = count;
+            //   });
+            // }
+          }
+        }
+      }
+
+      for (const [slot, entries] of recordCountGroupedByFile.entries()) {
+        const allFiles = Object.keys(entries),
+          fullFileLength = allFiles.length;
+
+        const sortedIndex = [...Object.entries(entries).entries()].sort((a, b) => b[1][1] - a[1][1]).map(e => parseInt(e[0]));
+
+        const shuffledFileEntries = [];
+        seed(shuffle, {global: true});
+        const previousIndices = [];
+        for (const i of Array.from({length: batch}, (_, i) => i)) {
+          let index = Math.floor(Math.random() * fullFileLength);
+          while (previousIndices.includes(index)) {
+            index = Math.floor(Math.random() * fullFileLength.length);
+          }
+          shuffledFileEntries.push(allFiles[sortedIndex[index]]);
+        }
+        seed.resetGlobal();
+
+        const csvWrite = stringify({
+          header: true, columns: [...CSVHEADER, ...GODELMETA[script].EX[slot]],
+        });
+        csvWrite.pipe(createWriteStream(`../sample/${script}-${slot}.csv`));
+
+        let fileIndex = -1;
+        for (const entry of shuffledFileEntries) {
+          fileIndex += 1;
+          const [db, filePath] = entry.split('|');
+
+          let json = JSON.parse(await readFile(path.join(dbDir, db, script + '.json'), 'utf-8'));
+          if (Array.isArray(json)) {
+            const [newArr, removed] = filter(json);
+            if (removed > 0) {
+              json = newArr;
+              console.log(`Removed ${removed} entries from ${script}.json`);
+            }
+          } else {
+            for (const [k, v] of Object.entries(json)) {
+              if (Array.isArray(v)) {
+                const [newArr, removed] = filter(json[k]);
+                if (removed > 0) {
+                  json[k] = newArr;
+                  console.log(`Removed ${removed} entries from ${script}.json -> ${k}`);
+                }
+              }
+            }
+          }
+
+          let recordIndex = -1;
+          if (filePathFields[slot] === '.') {
+            for (const record of json) {
+              if (record.filePath === filePath) {
+                recordIndex += 1;
+
+                const ln = GODELMETA[script].LN[slot].map(field => 'L' + record[field]).join('-');
+                csvWrite.write({
+                  mask: 1,
+                  fileIndex,
+                  recordIndex,
+                  url: `https://github.com/${nameMap[db]}/blob/${db.split('@')[1]}/${filePath}#${ln}`,
+                  ...GODELMETA[script].EX[slot].reduce((p, c) => {
+                    p[c] = record[c];
+                    return p;
+                  }, {}),
+                });
+              }
+            }
+          } else {
+            const segments = filePathFields[slot].split('/');
+            if (segments.length === 2) {
+              for (const record of json[segments[0]]) {
+                if (record[segments[1] === '.' ? 'filePath' : segments[1]] === filePath) {
+                  recordIndex += 1;
+
+                  const ln = GODELMETA[script].LN[slot].map(field => 'L' + record[field]).join('-');
+                  csvWrite.write({
+                    mask: 1,
+                    fileIndex,
+                    recordIndex,
+                    url: `https://github.com/${nameMap[db]}/blob/${db.split('@')[1]}/${filePath}#${ln}`,
+                    ...GODELMETA[script].EX[slot].reduce((p, c) => {
+                      p[c] = record[c];
+                      return p;
+                    }, {}),
+                  });
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  });
+
+cli.command('sample-merge')
+  .description('Merge sample results')
+  .action(async () => {
+    const files = await readdirNoDS('../sample');
+
+    const reviewResults = {};
+    for (const file of files) {
+      if (['README.md', 'class-with-extension-0.csv'].includes(file)) {
+        continue;
+      }
+
+      const csvRead = createReadStream(path.join('../sample', file))
+        .pipe(parse({
+          columns: true,
+        }));
+
+      const scriptName = file.substring(0, file.length - 6);
+
+      reviewResults[scriptName] = {TP: 0, FP: 0, FN: 0};
+
+      for await (const record of csvRead) {
+        const mask = parseInt(record.mask);
+        if (mask === 1) {
+          reviewResults[scriptName].TP += 1;
+        } else if (mask === 0) {
+          reviewResults[scriptName].FP += 1;
+        } else if (mask === -1 || mask === -3) {
+          reviewResults[scriptName].FN += 1;
+        }
+      }
+    }
+
+    const fixtures = await stat(true);
+    const script2group = {};
+    Object.entries(fixtures).forEach(([group, obj]) => {
+      if (group === 'framework') {
+        group = 'semantic';
+      }
+      Object.entries(obj).forEach(([k, v]) => {
+        if (k === 'gdls') {
+          v.forEach(script => {
+            if (script.startsWith('get-')) {
+              script2group[script.substring(4, script.length - 4)] = group;
+            }
+          });
+        } else {
+          v.gdls.forEach(script => {
+            if (script.startsWith('get-')) {
+              script2group[script.substring(4, script.length - 4)] = group;
+            }
+          });
+        }
+      });
+    });
+
+    const groupResults = {total: {TP: 0, FP: 0, FN: 0}};
+    for (const [script, result] of Object.entries(reviewResults)) {
+      const group = script2group[script];
+      if (!groupResults[group]) {
+        groupResults[group] = {TP: 0, FP: 0, FN: 0};
+      }
+
+      groupResults[group].TP += result.TP;
+      groupResults.total.TP += result.TP;
+      groupResults[group].FP += result.FP;
+      groupResults.total.FP += result.FP;
+      groupResults[group].FN += result.FN;
+      groupResults.total.FN += result.FN;
+    }
+
+    function noTruncDecimal(num) {
+      // return num.toLocaleString('en-US', {
+      //   minimumFractionDigits: 1,
+      //   maximumFractionDigits: 1,
+      //   roundingMode: 'trunc',
+      // });
+      return num.toFixed(1);
+    }
+
+    Object.entries(groupResults).forEach(([group, result]) => {
+      const precision = result.TP / (result.TP + result.FP) * 100;
+      const recall = result.TP / (result.TP + result.FN) * 100;
+      const f1 = 2 * precision * recall / (precision + recall);
+      const count = result.TP + result.FP + result.FN;
+      console.log(`${group}: ${noTruncDecimal(precision)} ${noTruncDecimal(recall)} ${noTruncDecimal(f1)} ${count}`);
     });
   });
 
