@@ -1,6 +1,6 @@
 # Public Data for DiTU
 
-This repository contains tools, data, and scripts for our work **DiTU: Exploring Practical Language Feature Usages for JavaScript and TypeScript**. Reviewers can either validate experimental results or utilize the infrastructure to explore their own interested language features.
+This repository contains tools, data, and scripts for our work **Evolving Trends, Patterns, and Hidden Pitfalls: Unveiling JavaScript Feature Usage in the Wild**. Reviewers can either validate experimental results or utilize the infrastructure to explore their own interested language features.
 
 ## Repository Structure
 
@@ -9,13 +9,12 @@ This repository contains tools, data, and scripts for our work **DiTU: Exploring
 |- README.md
 |- package.json             // For setup JavaScript environment
 |- repo-list
-|  |- 240221.csv            // Project repository list, as described in paper Section 3.2.1
+|  |- 240221.csv            // Project repository list
 |  |- 240221-summary.csv    // Experimental meta data (mostly query execution duration)
-|  |- 240221-results.json   // Statistical metric analysis results, as described in paper Section 2.3.3
-|  |- 240221-trends.png     // Full feature usage trends that in-paper Figure 5 didn't exhibit due to page limit
+|  |- 240221-results-s.json // Heuristic metric statistical analysis results
 |- fixtures                 // Feature READMEs, GodelScript query scripts, and post-process scripts
 |  |- class                 // A feature group
-|  |  |- fancy-member-name  // A feature under the 'Class' group, in-paper ID is CD-02
+|  |  |- fancy-member-name  // A feature under the 'Class' group
 |  |  |  |- README.md       // Feature description, unit tests, metrics, tags (new, corner, etc.)
 |  |  |  |- index.js        // JavaScript Post-process script
 |  |  |  |- use-all-class-members.gdl  // GodelScript query script, see below on how to interprete the naming pattern
