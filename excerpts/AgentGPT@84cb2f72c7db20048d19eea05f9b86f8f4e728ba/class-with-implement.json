@@ -1,0 +1,7 @@
+[{"filePath": "next/src/services/agent/agent-work/create-task-work.ts", "classOid": -8370810315418819475, "implStartLine": 5, "implStartColumn": 37, "typeCount": 1},
+{"filePath": "next/src/services/agent/agent-work/execute-task-work.ts", "classOid": -8155916712254608422, "implStartLine": 11, "implStartColumn": 38, "typeCount": 1},
+{"filePath": "next/src/services/agent/agent-run-model.tsx", "classOid": 2264069838087663746, "implStartLine": 34, "implStartColumn": 35, "typeCount": 1},
+{"filePath": "next/src/services/agent/agent-work/analyze-task-work.ts", "classOid": 7461974463011178882, "implStartLine": 8, "implStartColumn": 38, "typeCount": 1},
+{"filePath": "next/src/services/agent/agent-work/summarize-work.ts", "classOid": 7924371077601719268, "implStartLine": 9, "implStartColumn": 36, "typeCount": 1},
+{"filePath": "next/src/services/agent/agent-work/chat-work.ts", "classOid": 8320299206316634501, "implStartLine": 9, "implStartColumn": 31, "typeCount": 1},
+{"filePath": "next/src/services/agent/agent-work/start-task-work.ts", "classOid": -2333888739710632565, "implStartLine": 4, "implStartColumn": 36, "typeCount": 1}]

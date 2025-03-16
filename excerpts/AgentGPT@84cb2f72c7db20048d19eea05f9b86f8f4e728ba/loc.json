@@ -1,0 +1,24 @@
+{"header" : {
+  "cloc_url"           : "github.com/AlDanial/cloc",
+  "cloc_version"       : "2.00",
+  "elapsed_seconds"    : 0.119088888168335,
+  "n_files"            : 161,
+  "n_lines"            : 9512,
+  "files_per_second"   : 1351.93133865204,
+  "lines_per_second"   : 79873.1111382496,
+  "report_file"        : "/Volumes/Filabbit/lfs/dbs/AgentGPT@84cb2f72c7db20048d19eea05f9b86f8f4e728ba/loc.json"},
+"TypeScript" :{
+  "nFiles": 146,
+  "blank": 922,
+  "comment": 184,
+  "code": 7533},
+"JavaScript" :{
+  "nFiles": 15,
+  "blank": 69,
+  "comment": 55,
+  "code": 749},
+"SUM": {
+  "blank": 991,
+  "comment": 239,
+  "code": 8282,
+  "nFiles": 161} }

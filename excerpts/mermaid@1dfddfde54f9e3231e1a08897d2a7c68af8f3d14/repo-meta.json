@@ -1,0 +1,14 @@
+{
+  "tsVer": [],
+  "targetVer": [],
+  "tslib": [],
+  "hasSubpathImports": false,
+  "hasSubpathExports": true,
+  "hasWorkspaces": false,
+  "hasNxInPkgJson": false,
+  "hasLernaJson": false,
+  "hasNxJson": false,
+  "hasSrc": true,
+  "packagesCountByRootDir": 0,
+  "packagesCountByNamedPkgJson": 0
+}

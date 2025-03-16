@@ -19,62 +19,87 @@ This repository contains tools, data, and scripts for our work **Evolving Trends
 |  |  |  |- index.js        // JavaScript Post-process script
 |  |  |  |- use-all-class-members.gdl  // GodelScript query script, see below on how to interprete the naming pattern
 |  |- ...
+|- excerpts                 // A small excerpt of 4 commits of raw query results
+|  |- AgentGPT@8...         // A commit directory
+|  |  |- coref_javascript_src.db       // A CodeFuse-Query database, you can open it with any SQLite viewer
 |- src
 |  |- cli.js                // Toolchain command line interface
 ```
 
 ## Fixture Description
 
-### ID Mapping Table
+### Mapping Table
 
 This table lists the mapping relation between in-paper feature ID and its corresponding fixture in this repository.
 
-| In-paper ID & Description | Directory |
+| ID | Directory |
 | --- | --- |
-| **(VD-01)** Use keyword `var` | [fixtures/variable-declaration/use-keyword-var](./fixtures/variable-declaration/use-keyword-var/README.md) |
-| **(VD-02)** Declare list of variables in one statement | [fixtures/variable-declaration/declaration-list](./fixtures/variable-declaration/declaration-list/README.md) |
-| **(VD-03)** Use destructuring pattern | [fixtures/variable-declaration/destructuring-pattern](./fixtures/variable-declaration/destructuring-pattern/README.md) |
-| **(VD-04)** Declare rest variable | [fixtures/variable-declaration/complex-rest](./fixtures/variable-declaration/complex-rest/README.md) |
-| **(VD-05)** Use comma elision in array destructuring pattern | [fixtures/variable-declaration/comma-elision](./fixtures/variable-declaration/comma-elision/README.md) |
-| **(FD-01)** Declare destructuring parameter | [fixtures/function/parameter-destructuring](./fixtures/function/parameter-destructuring/README.md) |
-| **(FD-02)** Use special variable `arguments` | [fixtures/function/use-arguments-in-function-body](./fixtures/function/use-arguments-in-function-body/README.md) |
-| **(FD-03)** Use special variable `this` | [fixtures/function/use-this-in-function-body](./fixtures/function/use-this-in-function-body/README.md) |
-| **(CD-01)** Declare private member | [fixtures/class/private-member](./fixtures/class/private-member/README.md) |
-| **(CD-02)** Use unusual member name | [fixtures/class/fancy-member-name](./fixtures/class/fancy-member-name/README.md) |
-| **(CD-03)** Declare static initialization block | [fixtures/class/static-block](./fixtures/class/static-block/README.md) |
-| **(MS-01)** Use ESM module system instead of CJS | [fixtures/module-system/esm-cjs-syntax](./fixtures/module-system/esm-cjs-syntax/README.md) |
-| **(MS-02)** Use new file extension | [fixtures/module-system/file-extension](./fixtures/module-system/file-extension/README.md) |
-| **(MS-03)** Use dynamic `import()` function | [fixtures/module-system/import-function](./fixtures/module-system/import-function/README.md) |
-| **(MS-04)** Export expression result | [fixtures/module-system/computational-export](./fixtures/module-system/computational-export/README.md) |
-| **(MS-05)** Import then export symbols separately | [fixtures/module-system/import-then-export-over-reexport](./fixtures/module-system/import-then-export-over-reexport/README.md) |
-| **(MS-06)** Use side-effect import | [fixtures/module-system/side-effect-import](./fixtures/module-system/side-effect-import/README.md) |
-| **(MS-07)** Share export name for JS value entity and TS type entity | [fixtures/module-system/export-value-and-type-in-one-name](./fixtures/module-system/export-value-and-type-in-one-name/README.md) |
-| **(MS-08)** Declare import meta attribute| [fixtures/module-system/import-attribute](./fixtures/module-system/import-attribute/README.md) |
-| **(MS-09)** Conform to monorepo paradigm | [fixtures/module-system/monorepo](./fixtures/module-system/monorepo/README.md) |
-| **(MS-10)** Declare subpath exports in package.json | [fixtures/module-system/subpath-exports](./fixtures/module-system/subpath-exports/README.md) |
-| **(MS-11)** Declare subpath import in package.json | [fixtures/module-system/subpath-imports](./fixtures/module-system/subpath-imports/README.md) |
-| **(OM-01)** Add property to first-class citizen | [fixtures/object-mechanism/first-class-citizen-modify-prop](./fixtures/object-mechanism/first-class-citizen-modify-prop/README.md) |
-| **(OM-02)** Reassign to first-class citizen’s name | [fixtures/object-mechanism/reassign-to-declaration-name](./fixtures/object-mechanism/reassign-to-declaration-name/README.md) |
-| **(OM-03)** Modify object’s prototype | [fixtures/object-mechanism/modify-prototype](./fixtures/object-mechanism/modify-prototype/README.md) |
-| **(OM-04)** Override predefined methods by `Symbol` | [fixtures/object-mechanism/symbols](./fixtures/object-mechanism/symbols/README.md) |
-| **(AS-01)** Create object with API call instead of literal | [fixtures/semantic/api-over-literal](./fixtures/semantic/api-over-literal/README.md) |
-| **(AS-02)** Call `React.createElement()` manually instead of using JSX| [fixtures/framework/createelement-over-jsx](./fixtures/framework/createelement-over-jsx/README.md) |
-| **(AS-03)** Declare React function component instead of class component | [fixtures/framework/react-component](./fixtures/framework/react-component/README.md) |
-| **(TS-01)** Use class in type context | [fixtures/typescript/class-as-type](./fixtures/typescript/class-as-type/README.md) |
-| **(TS-02)** Implement multiple interfaces in class declaration | [fixtures/typescript/class-multi-implements](./fixtures/typescript/class-multi-implements/README.md) |
-| **(TS-03)** Declare both fields and parameters in class constructor | [fixtures/typescript/class-constructor-parameter-field](./fixtures/typescript/class-constructor-parameter-field/README.md) |
-| **(TS-04)** Declare `this` parameter | [fixtures/typescript/parameter-this](./fixtures/typescript/parameter-this/README.md) |
-| **(TS-05)** Declare interface with multiple inheritances | [fixtures/typescript/interface-multi-extends](./fixtures/typescript/interface-multi-extends/README.md) |
-| **(TS-06)** Declare const enum | [fixtures/typescript/const-enum](./fixtures/typescript/const-enum/README.md) |
-| **(TS-07)** Use unusual enum member name | [fixtures/typescript/enum-member-fancy-name](./fixtures/typescript/enum-member-fancy-name/README.md) |
-| **(TS-08)** Override enum member initializer | [fixtures/typescript/enum-member-overridden-initializer](./fixtures/typescript/enum-member-overridden-initializer/README.md) |
-| **(TS-09)** Declare overridden type parameters | [fixtures/typescript/overridden-type-parameter](./fixtures/typescript/overridden-type-parameter/README.md) |
-| **(TS-10)** Use declaration merging | [fixtures/typescript/declaration-merging](./fixtures/typescript/declaration-merging/README.md) |
-| **(TS-11)** Use identifier path as namespace name | [fixtures/typescript/namespace-identifier-path](./fixtures/typescript/namespace-identifier-path/README.md) |
-| **(TS-12)** Decorate import/export expression with keyword `type` | [fixtures/typescript/type-import-export](./fixtures/typescript/type-import-export/README.md) |
-| **(MI-01)** Use new compound assignment operators | [fixtures/misc/binary-operators](./fixtures/misc/binary-operators/README.md) |
-| **(MI-02)** Use tag function in template literal | [fixtures/misc/tag-function](./fixtures/misc/tag-function/README.md) |
-| **(MI-03)** Declare standalone block| [fixtures/misc/standalone-block](./fixtures/misc/standalone-block/README.md) |
+| LG-1A | [fixtures/misc/tag-function](./fixtures/misc/tag-function/README.md) |
+| LG-2A | [fixtures/misc/standalone-block](./fixtures/misc/standalone-block/README.md) |
+| SD-1A | [fixtures/variable-declaration/destructuring-pattern](./fixtures/variable-declaration/destructuring-pattern/README.md) |
+| | [fixtures/variable-declaration/complex-rest](./fixtures/variable-declaration/complex-rest/README.md) |
+| SD-2AB | [fixtures/variable-declaration/comma-elision](./fixtures/variable-declaration/comma-elision/README.md) |
+| FC-1A | [fixtures/function/parameter-destructuring](./fixtures/function/parameter-destructuring/README.md) |
+| FC-1B | [fixtures/function/use-arguments-in-function-body](./fixtures/function/use-arguments-in-function-body/README.md) |
+| FC-2AB | [fixtures/class/fancy-member-name](./fixtures/class/fancy-member-name/README.md) |
+| SM-1AB | [fixtures/module-system/import-then-export-over-reexport](./fixtures/module-system/import-then-export-over-reexport/README.md) |
+| SM-2A | [fixtures/module-system/import-attribute](./fixtures/module-system/import-attribute/README.md) |
+| OA-1AB | [fixtures/semantic/api-over-literal](./fixtures/semantic/api-over-literal/README.md) |
+| OA-2AB | [fixtures/framework/react-component](./fixtures/framework/react-component/README.md) |
+| TS-1AB | [fixtures/typescript/class-constructor-parameter-field](./fixtures/typescript/class-constructor-parameter-field/README.md) |
+| TS-2AB | [fixtures/typescript/declaration-merging](./fixtures/typescript/declaration-merging/README.md) |
+
+<details>
+<summary>We actually queried all 44 individual features!</summary>
+
+To collect feature alternatives, we first collect 44 individual features, and then filtered out features with no alternatives. Following features were filtered out, but we still provide their corresponding fixture directories for reference.
+
+| Description | Directory |
+| --- | --- |
+| Use keyword `var` | [fixtures/variable-declaration/use-keyword-var](./fixtures/variable-declaration/use-keyword-var/README.md) |
+| Declare list of variables in one statement | [fixtures/variable-declaration/declaration-list](./fixtures/variable-declaration/declaration-list/README.md) |
+| Use destructuring pattern | [fixtures/variable-declaration/destructuring-pattern](./fixtures/variable-declaration/destructuring-pattern/README.md) |
+| Declare rest variable | [fixtures/variable-declaration/complex-rest](./fixtures/variable-declaration/complex-rest/README.md) |
+| Use comma elision in array destructuring pattern | [fixtures/variable-declaration/comma-elision](./fixtures/variable-declaration/comma-elision/README.md) |
+| Declare destructuring parameter | [fixtures/function/parameter-destructuring](./fixtures/function/parameter-destructuring/README.md) |
+| Use special variable `arguments` | [fixtures/function/use-arguments-in-function-body](./fixtures/function/use-arguments-in-function-body/README.md) |
+| Use special variable `this` | [fixtures/function/use-this-in-function-body](./fixtures/function/use-this-in-function-body/README.md) |
+| Declare private member | [fixtures/class/private-member](./fixtures/class/private-member/README.md) |
+| Use unusual member name | [fixtures/class/fancy-member-name](./fixtures/class/fancy-member-name/README.md) |
+| Declare static initialization block | [fixtures/class/static-block](./fixtures/class/static-block/README.md) |
+| Use ESM module system instead of CJS | [fixtures/module-system/esm-cjs-syntax](./fixtures/module-system/esm-cjs-syntax/README.md) |
+| Use new file extension | [fixtures/module-system/file-extension](./fixtures/module-system/file-extension/README.md) |
+| Use dynamic `import()` function | [fixtures/module-system/import-function](./fixtures/module-system/import-function/README.md) |
+| Export expression result | [fixtures/module-system/computational-export](./fixtures/module-system/computational-export/README.md) |
+| Import then export symbols separately | [fixtures/module-system/import-then-export-over-reexport](./fixtures/module-system/import-then-export-over-reexport/README.md) |
+| Use side-effect import | [fixtures/module-system/side-effect-import](./fixtures/module-system/side-effect-import/README.md) |
+| Share export name for JS value entity and TS type entity | [fixtures/module-system/export-value-and-type-in-one-name](./fixtures/module-system/export-value-and-type-in-one-name/README.md) |
+| Declare import meta attribute| [fixtures/module-system/import-attribute](./fixtures/module-system/import-attribute/README.md) |
+| Conform to monorepo paradigm | [fixtures/module-system/monorepo](./fixtures/module-system/monorepo/README.md) |
+| Declare subpath exports in package.json | [fixtures/module-system/subpath-exports](./fixtures/module-system/subpath-exports/README.md) |
+| Declare subpath import in package.json | [fixtures/module-system/subpath-imports](./fixtures/module-system/subpath-imports/README.md) |
+| Add property to first-class citizen | [fixtures/object-mechanism/first-class-citizen-modify-prop](./fixtures/object-mechanism/first-class-citizen-modify-prop/README.md) |
+| Reassign to first-class citizen’s name | [fixtures/object-mechanism/reassign-to-declaration-name](./fixtures/object-mechanism/reassign-to-declaration-name/README.md) |
+| Modify object’s prototype | [fixtures/object-mechanism/modify-prototype](./fixtures/object-mechanism/modify-prototype/README.md) |
+| Override predefined methods by `Symbol` | [fixtures/object-mechanism/symbols](./fixtures/object-mechanism/symbols/README.md) |
+| Create object with API call instead of literal | [fixtures/semantic/api-over-literal](./fixtures/semantic/api-over-literal/README.md) |
+| Call `React.createElement()` manually instead of using JSX| [fixtures/framework/createelement-over-jsx](./fixtures/framework/createelement-over-jsx/README.md) |
+| Declare React function component instead of class component | [fixtures/framework/react-component](./fixtures/framework/react-component/README.md) |
+| Use class in type context | [fixtures/typescript/class-as-type](./fixtures/typescript/class-as-type/README.md) |
+| Implement multiple interfaces in class declaration | [fixtures/typescript/class-multi-implements](./fixtures/typescript/class-multi-implements/README.md) |
+| Declare both fields and parameters in class constructor | [fixtures/typescript/class-constructor-parameter-field](./fixtures/typescript/class-constructor-parameter-field/README.md) |
+| Declare `this` parameter | [fixtures/typescript/parameter-this](./fixtures/typescript/parameter-this/README.md) |
+| Declare interface with multiple inheritances | [fixtures/typescript/interface-multi-extends](./fixtures/typescript/interface-multi-extends/README.md) |
+| Declare const enum | [fixtures/typescript/const-enum](./fixtures/typescript/const-enum/README.md) |
+| Use unusual enum member name | [fixtures/typescript/enum-member-fancy-name](./fixtures/typescript/enum-member-fancy-name/README.md) |
+| Override enum member initializer | [fixtures/typescript/enum-member-overridden-initializer](./fixtures/typescript/enum-member-overridden-initializer/README.md) |
+| Declare overridden type parameters | [fixtures/typescript/overridden-type-parameter](./fixtures/typescript/overridden-type-parameter/README.md) |
+| Use declaration merging | [fixtures/typescript/declaration-merging](./fixtures/typescript/declaration-merging/README.md) |
+| Use identifier path as namespace name | [fixtures/typescript/namespace-identifier-path](./fixtures/typescript/namespace-identifier-path/README.md) |
+| Decorate import/export expression with keyword `type` | [fixtures/typescript/type-import-export](./fixtures/typescript/type-import-export/README.md) |
+| Use new compound assignment operators | [fixtures/misc/binary-operators](./fixtures/misc/binary-operators/README.md) |
+| Use tag function in template literal | [fixtures/misc/tag-function](./fixtures/misc/tag-function/README.md) |
+| Declare standalone block| [fixtures/misc/standalone-block](./fixtures/misc/standalone-block/README.md) |
 
 There are also 4 features listed but not analyzed due to query engine did not support them:
 
@@ -85,15 +110,17 @@ There are also 4 features listed but not analyzed due to query engine did not su
 | Use string alias in import/export alias | [module-system/string-alias](./fixtures/module-system/string-alias/README.md) | Not supported by TypeScript (A [known issue](https://github.com/microsoft/TypeScript/issues/40594)) |
 | Declare `const` enum | [typescript/const-enum](./fixtures/typescript/const-enum/README.md) | Parser version 4.5 < 5.0 |
 
+</details>
+
 ### Feature README Structure
 
 Every feature README consists of 3 parts.
 
-#### Patterns (Not refers to 'usage pattern' in-paper)
+#### Patterns (Not the same as 'usage pattern' as described in Section 3.2)
 
-This section lists (almost) all available code that matches this feature based on the language spec, and serves as unit test (as described in in-paper Section 4.1) and demonstration while implementing the query script.
+This section lists (almost) all available code snippets that match this feature based on the language spec, and serves as unit test (Section 4.2) and demonstration while implementing the query script.
 
-#### Metrics
+#### Implementation Metrics (Facilitate 'metrics' as described in Section 3.2)
 
 Metrics designed for this feature.
 
@@ -147,7 +174,7 @@ Tags provide extra prospect for categorize features.
 
 ## Result Interpretation
 
-In the statistical analysis result JSON [`240221-result.json`](./repo-list/240221-results.json):
+In the statistical analysis result JSON [`240221-result-s.json`](./repo-list/240221-results-s.json):
 
 > [!WARNING]
 > This JSON file contains too many lines, to ensure the best viewing experience, you are suggested to open it with an editor that support large-file collapse (like WebStorm).
@@ -156,23 +183,21 @@ In the statistical analysis result JSON [`240221-result.json`](./repo-list/24022
   > The entry key follows the `<Feature group key>/<Feature key>` pattern, where a `key` is the directory name that can be found in the above mapping table.
 
 * In a top-level object, several properties along with their values are presented, the naming pattern is loosely coupled with the metric we designed (As described in in-paper Section 2.3.3).
-  * Property whose name started with `all-` and the next adjacent property (the metric **Usage Times**) are used to calculate the metric **Usage Frequency**, e.g., the usage frequency of feature VD-05 can be calculated by `array-destructuring-with-elision/sum (L5269)` / `all-array-destructuring-variable-declarations(L2635)`.
+  * Property whose name started with `all-` and the next adjacent property (the metric **Usage Count**) are used to calculate the metric **Usage Frequency**.
   * Property whose name started with `feature-usage-` is the metric **Usage Frequency** (So the above caluculation process was already performed).
     > Note that some features did not possess their corresponding usage frequency metric, this is because it was difficult for them to assign a proper denominator (property `all-`) to perform the division, e.g., TS-10 declaration merging allows various entity types to participant in and it is not practical to sum them all.
   * Property whose name started with `max-count-of-` is the metric **Max Count**, and the concrete meaning should be self-explanatory enough through the property name.
-  * Property whose name started with `type(s)-` is the metric **Usage Context Type** or **Syntax Node Type** based on its concrete meaning.
+  * Property whose name started with `type(s)-` is the metric **Usage Context Type** or **Syntax Node Kind** based on its concrete meaning.
 
-In the paper, we mainly utilized the property `feature-usage-` to visualize various feature usage trends, and in text we also selectively chose some metrics to demonstrate the fine detail of features. Due to the page limit, the in-paper Figure 5 only exhibit representative feature usage trends, and all 44 feature usage trends can be seen in this repository [here](./repo-list/240221-trends.png).
+In the paper, we mainly utilized the property `feature-usage-` to visualize various feature usage trends, and in text we also selectively chose some metrics to demonstrate the fine detail of features.
 
-> [!NOTE]
-> Trend plots are not color-categorized as in-paper (Increasing/Decreasing are all colored in blue). All trends exhibit **average usage frequency** EXCEPT for feature MS-09, MS-10, OM-03, OM-04, AS-02, TS-10, and MI-03, **usage times** is used since it is hard to determine proper denominators for some of them to calculate a division. That is, Y-axis of these features can go beyond 100.
 
 ## Getting Started
 
 This section will guide you to replicate our experiment and analysis from cloning repository to final analysis and code review by statistic trace back. We provide multiple checkpoints in this whole process so that you can either start from scratch or use our pre-uploaded data.
 
 > [!CAUTION]
-> This experiment is extremely space-consuming, as visualized in Figure 4a. The Code-as-Data storage for ~3k repositories takes ~180GB disk space. If you want to fully replicate our experiment results, you should prepare **an SSD with at least 256GB empty space**.
+> This experiment is extremely space-consuming, as visualized in Figure 4b. The code query technique storage for ~3k repositories takes ~180GB disk space. If you want to fully replicate our experiment results, you should prepare **an SSD with at least 256GB empty space**.
 
 Almost all steps rely on the centric command line interface [`src/cli.js`](./src/cli.js), and you should have `Node.js` available in your system and install dependency packages by running `npm i` at the root directory of this repo. All available commands of `cli.js` are listed below, and some of them will be used in the following step-by-step tutorials.
 
@@ -415,7 +440,7 @@ After executing this command, a `results.json` will be generated under correspon
 <summary>Statistical Analysis</summary>
 
 > [!NOTE]
-> You can find our pre-generated statistical analysis results at [`240221-results.json`](./repo-list/240221-results.json), but you need a better editor to open and view it since it contains too many lines, as described in [Result Interpretation](#result-interpretation) above.
+> You can find our pre-generated statistical analysis results at [`240221-results-s.json`](./repo-list/240221-results-s.json), but you need a better editor to open and view it since it contains too many lines, as described in [Result Interpretation](#result-interpretation) above.
 
 After metrics are calculated for each database, the next step is add **time** as a new dimension for statistical analysis and the reveal of feature usage trends. To do so, run
 
@@ -423,13 +448,13 @@ After metrics are calculated for each database, the next step is add **time** as
 node cli.js analyze /path/to/db-dir
 ```
 
-, and the result `240221-results.json` will be generated under the directory `./repo-list`, which should be the same as what this repository contains if you exactly replicate our experiment.
+, and the result `240221-results-s.json` will be generated under the directory `./repo-list`, which should be the same as what this repository contains if you exactly replicate our experiment.
 </details>
 
 <details open>
 <summary>Metric Trace-back</summary>
 
-In-paper Section 4.3 and 4.4 (Results to RQ2 and RQ3) exhibit feature usage intent and pattern analysis results, which were derived by this step. At this step, we trace back some certain metrics to the source code that produce corresponding metrics, and have experienced developers to sampling review them to summarize code intents and patterns. To do so, run
+Section 5.2 and 5.3 (Results to RQ2 and RQ3) exhibit feature usage intent and pattern analysis results, which were derived by this step. At this step, we trace back some certain metrics to the source code that produce corresponding metrics, and have experienced developers to sampling review them to summarize code intents and patterns. To do so, run
 
 ```bash
 node cli.js trace /path/to/db-dir <feature> <metric> [options]
@@ -441,7 +466,7 @@ node cli.js trace /path/to/db-dir <feature> <metric> [options]
 https://github.com/nolimits4web/swiper/blob/2351d15250b309e0aefdf4ed83b9fece79a07472/src/types/swiper-events.d.ts#L350
 ```
 
-, which directly jump to the exact line in source code that results in the metric **The maximum count of declaration merging participants** to be 22 (Result JSON line 205206) for the TypeScript feature **(TS-10) Use declaration merging**.
+, which directly jump to the exact line in source code that results in the metric **The maximum count of declaration merging participants** to be 22 for the TypeScript feature **(TS-2A) Use declaration merging**.
 
 Available options for this command are as follows:
 
@@ -507,9 +532,9 @@ Please note that we did't implement corresponding trace-back functionality for a
 > Trace-able metrics like `fancy-tagged-tag-types/*` that ends with the wildcard symbol `*` means you can attach any valid type strings as long as it were presented in the result JSON. For example, for this metric, you can attach `PropertyAccessExpression`, `ObjectLiteralExpression`, and `CallExpression`, etc. as listed in the result JSON line 86066~86073.
 </details>
 
-## Small Questionnaire Survey
+## Questionnaire Survey
 
-As described in the in-paper Section 6 (Threats to validity), we conducted questionnaire survey on several experienced developers to validate our findings on three code smells.
+As described in Section 5.3 (RQ3), we conducted questionnaire survey on 30 experienced developers to assess three code smell patterns that are not covered by ESLint.
 
 ### Questionnaire Structure
 
@@ -549,7 +574,7 @@ D. Others
 
 #### Section II: Feature Usage Rating
 
-##### Part A: Destructuring pattern in variable declaration (In-paper feature VD-04)
+##### Part A: Destructuring pattern in variable declaration (Feature SD-1A)
 
 ###### II-A-1 [Single Choice]: Have you known and used ES6 variable destructuring pattern `let [a, b] = arr` and `let {a: b} = obj` before?
 
@@ -570,19 +595,19 @@ C. `let {a, ...{b}} = obj`
 D. `let {a, ...[b]} = obj`
 
 <details>
-<summary>Answers</summary>
+<summary>Answer</summary>
 A and B
 
 (It is considered to be correct only if both were selected.)
 </details>
 
-###### II-A-3 [Rating]: To what extent do you suggest the usage as shown in the previous question? (In-paper pattern NRD)
+###### II-A-3 [Rating]: To what extent do you suggest the usage as shown in the previous question? (Pattern S2)
 
 0---5
 
-##### Part B: Use pre-defined variable `arguments` in a function (In-paper feature FD-02)
+##### Part B: Import/Export Declaration in Aggregating Module (Feature SM-1AB)
 
-###### II-B-1 [Single Choice]: Have you known and used `arguments[n]` to deal with variadic function argument list before?
+###### II-B-1 [Single Choice]: Have you known and used `export xxx from 'xxx'` to export symbols from other files in a package entry (like `index.js`)?
 
 A. Known and used
 
@@ -590,51 +615,51 @@ B. Known but not used
 
 C. Neither known nor used
 
-###### II-B-2 [Single Choice]: Will the combing use of arguments variable and ES6 rest parameters result in a potential data synchronization problem? Which of the following option is true?
+###### II-B-2 [Single Choice]: The syntax `export xxx from 'xxx'` is called re-export, does this statement make the symbol `xxx` reference-able in the current file?
 
-A. There IS a data sync problem. `arguments[0] = newObj` won’t update `rest[0]` to newObj where the rest is declared as function `func(...rest)`.
+A. Yes, you can reference `xxx` in the current file if it was re-exported.
 
-B. There IS NOT a data sync problem. Any change through one way will be automatically synced to another way.
-
-<details>
-<summary>Answers</summary>
-A
-</details>
-
-###### II-B-3 [Rating]: To what extent do you suggest mixing the usage of `arguments` and `...rest` parameter? (In-paper pattern NRP)
-
-0---5
-
-##### Part C: Class constructor parameter and field (In-paper feature TS-03)
-
-###### II-C-1 [Single choice]: Have you known and used `constructor(public param)` where the decorator `public` made parameter `param` also a class field before?
-
-A. Known and used
-
-B. Known but not used
-
-C. Neither known nor used
-
-###### II-C-2 [Single Choice]: Considering the declaration `constructor(private param: string)` that makes `param` not only a parameter but also a class field, what options are correct about this?
-
-A. Due to the `private` decorator, class field `param` is truly private even in runtime, and can not be accessed via `<class instance name>.param`.
-
-B. The developer does not need to write explicit assignment `this.param = param` to store parameter value into corresponding class field.
-
-C. In ES2022 and above, the TypeScript decorator `private` will be compiled to `this.#param = param`, which will make field `param` truly runtime private.
+B. No, the re-export syntax only makes `xxx` available to other files that import the current file.
 
 <details>
 <summary>Answers</summary>
 B
 </details>
 
-###### II-C-3 [Rating]: To what extent do you suggest the mixing usage of `constructor(public p0, p1, private 02)` where `p0` and `p2` are fields and `p1` is a parameter?
+###### II-B-3 [Rating]: To what extent do you RESIST in the use of `export xxx from 'xxx'` and keep the separated export and import `import xxx from 'xxx'; export xxx;`? (Pattern S4)
+
+0---5
+
+##### Part C: Choice in Primitive Creation (Feature OA-1AB)
+
+###### II-C-1 [Single choice]: Have you known and used function/constructor call to JavaScript primitives like `new String(xxx)`, `Number(xxx)`, `new Object(xxx), etc.?
+
+A. Known and used
+
+B. Known but not used
+
+C. Neither known nor used
+
+###### II-C-2 [Multi Choice]: Consider the differences between a constructor call `new String(xxx)` and a function call `String(xxx)`, which of the following options are correct?
+
+A. The constructor call will return a string wrapper **object**, while the function call will return a string literal. That is, the code `(new) String('Hello World') === 'Hello World'` will return `false` for the constructor call and `true` for the function call.
+
+B. `new BigInt(123)` and `new Symbol('MY_SYMBOL')` are also valid constructor calls.
+
+C. When the function `includes('a')` is called on a string literal `'abc'`, the literal will be first wrapped into a string object, and then the function is called on the object.
+
+<details>
+<summary>Answers</summary>
+A and C
+</details>
+
+###### II-C-3 [Rating]: To what extent do you prefer creating blank objects using `new Object()` over `{ }`?
 
 0---5
 
 #### Section III: Ending Questions
 
-##### III-1 [Rating]: To what extend do you think that these three features covered in this questionnaire are corner cases? The bigger the rating, the more you agree with the corner case.
+##### III-1 [Rating]: To what extend do you think that these three features covered in this questionnaire are corner cases (features are rarely used in practice)? The bigger the rating, the more you agree with the corner case.
 
 0---5
 
@@ -655,10 +680,10 @@ B
 
 | Item | Value |
 | --- | --- |
-| Survey Participants | 18 |
+| Survey Participants | 30 |
 | Survey Completion Rate | 100% |
-| Familiarity to JavaScript and TypeScript | Normal (11), Familiar (7) |
-| Development Domain | Frontend (12), Backend (6), Library (4), Others (2) |
+| Familiarity to JavaScript and TypeScript | Normal (19), Familiar (11) |
+| Development Domain | Frontend (18), Backend (12), Library (10), Others (6) |
 | Rating to the extent of feature corner cases | 3.4/5 |
 | Rating to the questionnaire | 2.6/5 |
 
@@ -666,12 +691,12 @@ B
 
 | Question: Feature | Feature Awareness | Used Feature Before | Fact Question Correctness (Normal Dev) | Fact Question Correctness (Familiar Dev) | Pattern Rating |
 | --- | --- | --- | --- | --- | --- |
-| I: VD-04 | 83.0% | 66.7% | 9.1% | 0% | 2.0/5 |
-| II: FD-02 | 55.6% | 44.4% | 72.7% | 85.7% | 1.2/5 |
-| III: TS-03 | 50.0% | 38.9% | 18.2% | 28.6% | 1.8/5 |
+| I: SD-1A | 25 | 20 | 2 | 1 | 1.2/5 |
+| II: SM-1AB | 26 | 17 | 10 | 11 | 2.0/5 |
+| III: OA-1AB | 21 | 14 | 2 | 6 | 1.8/5 |
 
 #### Observations
 
-First, developers exhibit insufficient awareness and usage experiences among common and uncommon language features. For example, 9 out of 18 developers (50.0\%) were aware of the parameter field feature (TS-03), and only  of them had used it before. Unexpectedly, not all developers are aware of the rest variable feature (VD-04), which was introduced in ES2018.
+First, developers exhibit low accuracy on subtle feature details. On what destructuring patterns are allowed to nest and difference between constructor call and function call in creating primitives, less than 30\% of developers can correctly select the true answer, and there is no significant difference between senior developers and expert developers, even if some declared to be familiar with the language specification.
 
-Second, developers exhibit low accuracy on subtle feature details. On what destructure patterns are allowed to nest and whether the TypeScript `private` modifier works at runtime, less than 30\% of developers can correctly distinguish the true answer, and there is no significant difference between senior developers and expert developers, even if they declared to be familiar with the language specification. However intuitively, they all agreed with our judgment on the badness of these feature usage patterns (ratings were all below 2.0).
+However, intuitively, they all agreed with our judgment on the negative impact of these potential code smell patterns (ratings were all below 2.0).

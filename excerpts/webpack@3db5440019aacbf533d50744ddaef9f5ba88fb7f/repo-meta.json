@@ -1,0 +1,23 @@
+{
+  "tsVer": [
+    "^4.8.4"
+  ],
+  "targetVer": [
+    "ES2017",
+    "esnext"
+  ],
+  "tslib": [
+    "es2017",
+    "dom",
+    "esnext"
+  ],
+  "hasSubpathImports": false,
+  "hasSubpathExports": false,
+  "hasWorkspaces": false,
+  "hasNxInPkgJson": false,
+  "hasLernaJson": false,
+  "hasNxJson": false,
+  "hasSrc": false,
+  "packagesCountByRootDir": 0,
+  "packagesCountByNamedPkgJson": 0
+}

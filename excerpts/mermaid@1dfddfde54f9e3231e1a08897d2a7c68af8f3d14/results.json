@@ -1,0 +1,425 @@
+{
+  "variable-declaration/comma-elision": {
+    "all-array-destructuring-variable-declarations": 44,
+    "array-destructuring-with-elision": 0,
+    "feature-usage-against-variable-array-destructuring-usage": 0,
+    "max-count-of-comma-elisions-in-one-declaration": 0,
+    "types": {
+      "comma-elision": 0,
+      "pseudo-elision": 0
+    }
+  },
+  "variable-declaration/complex-rest": {
+    "all-array-rest-variable-declarations": 0,
+    "destructured-rest-variable": 0,
+    "feature-usage-against-variable-array-destructuring-rest-operator": null,
+    "max-count-of-nesting-depth": -1
+  },
+  "variable-declaration/declaration-list": {
+    "all-variable-declaration-statements": 4799,
+    "decl-list-have-more-than-one-element": 16,
+    "feature-usage-against-variable-declaration-statement": 0.003334027922483851,
+    "max-count-of-list-length": 6
+  },
+  "variable-declaration/destructuring-pattern": {
+    "all-variable-declaration-count": 4859,
+    "destructuring-pattern-count": 106,
+    "feature-usage-against-variable-declaration": 0.021815188310351924,
+    "max-count-of-nesting-depth": -1,
+    "types": {
+      "in-for-statement": 0,
+      "not-in-for-statement": 106
+    }
+  },
+  "variable-declaration/empty-destructuring": {
+    "all-variable-declarations": 4859,
+    "empty-object-pattern": 0,
+    "empty-array-pattern": 0,
+    "feature-usage-against-variable-declaration": 0
+  },
+  "variable-declaration/use-keyword-var": {
+    "all-variable-declaration-statements": 4799,
+    "keyword-var-used": 95,
+    "feature-usage-against-variable-declaration-statement": 0.019795790789747865
+  },
+  "misc/binary-operators": {
+    "all-binary-operators": 81,
+    "feature-usage-against-operator": 0,
+    "types": {
+      "normal": 81,
+      "rare": 0,
+      "new": 0
+    }
+  },
+  "misc/standalone-block": {
+    "all-standalone-blocks": 5,
+    "types-decl": {
+      "declaration-inside": 3,
+      "no-declaration": 2
+    },
+    "types-case": {
+      "multiple-in-switch-case-clause": 0,
+      "single-in-switch-case-clause": 4,
+      "none-in-switch-case-clause": 296
+    },
+    "feature-usage-in-switch-case-clause": 0.013333333333333334,
+    "max-count-of-nesting-depth": -1,
+    "max-count-of-in-switch-case-clause": 1
+  },
+  "misc/tag-function": {
+    "all-template-literals": 904,
+    "tagged-template-literals": 8,
+    "feature-usage-against-template-literal": 0.008849557522123894,
+    "types": {
+      "same-as-string-literal": 71,
+      "multi-line-string-literal": 518,
+      "normal": 307,
+      "tagged": 0,
+      "fancy-tagged": 8
+    },
+    "fancy-tagged-tag-types": {
+      "PropertyAccessExpression": 8
+    }
+  },
+  "class/fancy-member-name": {
+    "all-classes": 9,
+    "class-with-fancy-member-name": 0,
+    "feature-usage-against-class": 0,
+    "all-class-members": 31,
+    "class-member-with-fancy-member-name": 0,
+    "types": {
+      "identifier": 31,
+      "string-literal-identifier": 0,
+      "fancy-string-literal": 0,
+      "raw-numeric-literal": 0,
+      "converted-numeric-literal": 0,
+      "computed-value": 0
+    },
+    "feature-usage-against-class-member": 0
+  },
+  "class/private-member": {
+    "all-classes": 9,
+    "class-containing-private-identifier": 0,
+    "feature-usage-against-class": 0,
+    "all-class-members": 31,
+    "private-identifiers": 0,
+    "feature-usage-against-all-members": 0
+  },
+  "class/static-block": {
+    "all-classes": 9,
+    "class-with-static-block": 0,
+    "feature-usage-against-class": 0,
+    "max-count-of-static-block-in-class": -1
+  },
+  "function/parameter-destructuring": {
+    "all-functions": 2577,
+    "function-with-dest-param": 25,
+    "function-with-dest-rest-param": 0,
+    "feature-usage-dest-param-against-function": 0.009701202949165696,
+    "feature-usage-dest-rest-param-against-function": 0,
+    "max-count-of-rest-param-dest-pattern-nesting-depth": -1,
+    "max-count-of-non-rest-param-dest-pattern-nesting-depth": -1
+  },
+  "function/use-arguments-in-function-body": {
+    "all-functions": 2577,
+    "function-using-arguments": 2,
+    "feature-usage-against-function": 0.0007760962359332557,
+    "types": {
+      "with-normal-param-decl": 0,
+      "with-rest-param-decl": 0,
+      "without-param-decl": 2
+    },
+    "arguments-context": {
+      "ElementAccessExpression": 6,
+      "PropertyAccessExpression": 3,
+      "SpreadElement": 1
+    }
+  },
+  "function/use-this-in-function-body": {
+    "all-functions": 1613,
+    "function-assign-to-this": 75,
+    "feature-usage-against-function": 0.04649721016738995,
+    "types": {
+      "called-with-new": 0,
+      "called-without-new": 0
+    },
+    "this-context": {
+      "PropertyAccessExpression": 154,
+      "CallExpression": 15,
+      "ReturnStatement": 1,
+      "VariableDeclaration": 2
+    }
+  },
+  "semantic/api-over-literal": {
+    "all-heap-object-creation-point": 22253,
+    "creation-is-not-literal": 5,
+    "feature-usage-against-heap-object-creation-point": 0.0002246888060036849,
+    "types-object": {
+      "literal": 1612,
+      "function": 0,
+      "constructor": 0,
+      "api": 1
+    },
+    "types-object-function-arg-types": {},
+    "types-object-constructor-arg-types": {},
+    "types-object-api-arg-types": {
+      "NullKeyword": 1
+    },
+    "types-function": {
+      "literal": 2577,
+      "function": 0,
+      "constructor": 0
+    },
+    "types-function-function-arg-types": {},
+    "types-function-constructor-arg-types": {},
+    "types-string": {
+      "literal": 12880,
+      "function": 0,
+      "constructor": 0
+    },
+    "string-function-arg-types": {},
+    "string-constructor-arg-types": {},
+    "types-number": {
+      "literal": 5179,
+      "function": 4,
+      "constructor": 0
+    },
+    "types-number-function-arg-types": {
+      "CallExpression": 2,
+      "ElementAccessExpression": 2
+    },
+    "types-number-constructor-arg-types": {}
+  },
+  "typescript/class-as-type": {
+    "all-class-declarations": 8,
+    "class-used-in-type-context": 0,
+    "feature-usage-against-class-declaration": 0
+  },
+  "typescript/class-constructor-parameter-field": {
+    "all-class-constructors": 3,
+    "class-constructor-with-field": 3,
+    "feature-usage-against-class-constructor": 0,
+    "types": {
+      "pure-parameter": 0,
+      "mixed-field-and-parameter": 0,
+      "pure-field": 3
+    }
+  },
+  "typescript/class-multi-implements": {
+    "all-class-with-implement": 0,
+    "class-with-multiple-implements": 0,
+    "feature-usage-against-class-with-implement": null,
+    "max-count-of-implements-in-one-class": -1
+  },
+  "typescript/const-enum": {
+    "all-enums": 0,
+    "const-enums": 0,
+    "feature-usage-against-enum-declaration": null
+  },
+  "typescript/declaration-merging": {
+    "all-declaration-merging-usage": 0,
+    "max-count-of-merging-elements": -1,
+    "types": {}
+  },
+  "typescript/enum-member-fancy-name": {
+    "all-enum-members": 0,
+    "enum-member-with-non-identifier": 0,
+    "feature-usage-string-literal-against-enum-member": null,
+    "feature-usage-confusing-name-against-string-literal-name": null
+  },
+  "typescript/enum-member-overridden-initializer": {
+    "all-enum-members": 0,
+    "enum-member-with-initializer": 0,
+    "feature-usage-against-enum-member": null,
+    "types-initializer-node": {},
+    "types-initializer-index": {
+      "PartialInit": 0,
+      "FullInit": 0
+    }
+  },
+  "typescript/namespace-identifier-path": {
+    "all-namespace-declarations": 0,
+    "namespace-with-identifier-path": 0,
+    "feature-usage-against-namespace-declaration": null,
+    "namespaces-with-overlapped-name": 0,
+    "feature-usage-against-namespace-with-identifier-path": null,
+    "max-count-of-identifier-path-length": -1
+  },
+  "typescript/overridden-type-parameter": {
+    "all-type-parameters": 0,
+    "type-parameters-in-overriding-usage": 0,
+    "feature-usage-against-type-parameter": null,
+    "max-count-of-overridden-type-parameter-chain-length": -1
+  },
+  "typescript/parameter-this": {
+    "all-functions": 115,
+    "function-with-parameter-this": 0,
+    "feature-usage-against-applicable-function": 0,
+    "types-parent": {
+      "ParentIsFunction": 0,
+      "ParentIsMethod": 0
+    },
+    "types-type": {
+      "typedAsContainingClass": 0,
+      "typedNotAsContainingClass": 0
+    },
+    "indices": {}
+  },
+  "typescript/type-import-export": {
+    "all-typeable-import-export-elements": 970,
+    "type-only-import-export-elements": 0,
+    "feature-usage-against-all-typeable-element": 0
+  },
+  "typescript/interface-multi-extends": {
+    "all-interface-with-extends": 0,
+    "interface-with-multiple-extends": 0,
+    "feature-usage-against-interface-with-extends": null,
+    "max-count-of-extends-in-one-interface": -1
+  },
+  "module-system/computational-export": {
+    "all-export-default-declarations": 73,
+    "export-default-with-expression": 1,
+    "feature-usage-against-export-default-declaration": 0.0136986301369863,
+    "types": {
+      "ObjectLiteralExpression": 43,
+      "Identifier": 26,
+      "ArrowFunction": 2,
+      "CallExpression": 1
+    }
+  },
+  "module-system/esm-cjs-syntax": {
+    "all-js-files": 170,
+    "esm-files": 159,
+    "cjs-files": 11,
+    "feature-usage-esm-against-cjs": 0.9352941176470588
+  },
+  "module-system/export-value-and-type-in-one-name": {
+    "all-export-names": 0,
+    "export-name-with-multi-roles": 0,
+    "feature-usage-against-export-name": null,
+    "types-export": {
+      "exported": 0,
+      "not-exported": 0
+    },
+    "types-participant": {}
+  },
+  "module-system/file-extension": {
+    "all-files": 174,
+    "file-with-new-ext-name": 0,
+    "feature-usage-against-file": 0,
+    "types": {
+      ".js": 173,
+      ".ts": 1
+    }
+  },
+  "module-system/import-attribute": {
+    "all-assertable-declarations": 557,
+    "asserted-declaration": 0,
+    "feature-usage-against-assertable-declaration": 0
+  },
+  "module-system/import-function": {
+    "all-import-declarations": 557,
+    "import-function-callsite": 0,
+    "feature-usage-against-import-declaration": 0,
+    "types-level": {
+      "InTopLevel": 0,
+      "NotInTopLevel": 0
+    },
+    "types-arg": {}
+  },
+  "module-system/import-then-export-over-reexport": {
+    "all-reexport-likes": 0,
+    "import-then-export": 0,
+    "reexport": 0,
+    "feature-usage-against-reexport-like": null,
+    "feature-usage-reexport-against-reexport-like": null
+  },
+  "module-system/side-effect-import": {
+    "all-import-declarations": 557,
+    "side-effect-import": 4,
+    "feature-usage-against-import-declaration": 0.00718132854578097,
+    "types": {
+      "EmptyBraceImport": 0,
+      "EmptyBraceReexport": 0,
+      "NoBrace": 4
+    }
+  },
+  "module-system/subpath-imports": {
+    "all-module-specifiers": 177,
+    "subpath-module-specifier": 0,
+    "feature-usage-against-module-specifier": 0
+  },
+  "framework/createelement-over-jsx": {
+    "all-api-callsites": 0,
+    "types": {
+      "in-js": 0,
+      "in-jsx": 0
+    },
+    "component-names-dynamic-node": {},
+    "component-names-string-literal": {}
+  },
+  "framework/react-component": {
+    "all-react-components": 0,
+    "class-component": 0,
+    "function-component": 0,
+    "feature-usage-function-component-against-all-react-components": null,
+    "types": {
+      "class-component": 0,
+      "function-component": 0
+    },
+    "max-count-of-intends-in-a-class-component-lifecycle-method": -1,
+    "max-count-of-useState-hook-calls-in-fc": -1,
+    "max-count-of-useEffect-hook-calls-in-fc": -1
+  },
+  "module-system/monorepo": {
+    "is-monorepo": false,
+    "max-count-of-packages": 0
+  },
+  "module-system/subpath-exports": {
+    "has-subpath-exports": true
+  },
+  "object-mechanism/decorator-return-new-function": {
+    "decorator-functions": 0,
+    "decorator-returns-new": 0,
+    "feature-usage-against-user-defined-decorator-function": null
+  },
+  "object-mechanism/dynamic-heritage": {
+    "class-with-extension": 0,
+    "dynamic-extension": 0,
+    "feature-usage-against-class-with-extension": null,
+    "types": {
+      "extends-from-parameter": 0,
+      "extends-from-expression": 0
+    },
+    "extends-from-expression-types": {}
+  },
+  "object-mechanism/first-class-citizen-modify-prop": {
+    "all-functions-and-classes": 2586,
+    "modified-functions": 0,
+    "modified-classes": 0,
+    "feature-usage-against-function-and-class": 0,
+    "add-what-to-function": {},
+    "add-what-to-class": {}
+  },
+  "object-mechanism/modify-prototype": {
+    "all-modify-to-prototype-usages": 0,
+    "types-modify-to": {
+      "ModifyClass": 0,
+      "ModifyFunction": 0,
+      "ModifyBuiltIn": 0
+    },
+    "types-entity": {}
+  },
+  "object-mechanism/reassign-to-declaration-name": {
+    "all-functions-and-classes": 2586,
+    "modified-functions": 0,
+    "modified-classes": 0,
+    "feature-usage-against-function-and-class": 0,
+    "function-changed-to-what": {},
+    "class-changed-to-what": {}
+  },
+  "object-mechanism/symbols": {
+    "all-symbol-usages": 0,
+    "types": {}
+  }
+}

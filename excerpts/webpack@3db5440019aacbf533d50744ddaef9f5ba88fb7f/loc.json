@@ -1,0 +1,29 @@
+{"header" : {
+  "cloc_url"           : "github.com/AlDanial/cloc",
+  "cloc_version"       : "2.00",
+  "elapsed_seconds"    : 1.23392105102539,
+  "n_files"            : 4793,
+  "n_lines"            : 206687,
+  "files_per_second"   : 3884.36520798232,
+  "lines_per_second"   : 167504.23362033,
+  "report_file"        : "/Volumes/Filabbit/lfs/dbs/webpack@3db5440019aacbf533d50744ddaef9f5ba88fb7f/loc.json"},
+"JavaScript" :{
+  "nFiles": 4729,
+  "blank": 13641,
+  "comment": 23119,
+  "code": 150245},
+"TypeScript" :{
+  "nFiles": 62,
+  "blank": 1257,
+  "comment": 7786,
+  "code": 10637},
+"JSX" :{
+  "nFiles": 2,
+  "blank": 0,
+  "comment": 0,
+  "code": 2},
+"SUM": {
+  "blank": 14898,
+  "comment": 30905,
+  "code": 160884,
+  "nFiles": 4793} }

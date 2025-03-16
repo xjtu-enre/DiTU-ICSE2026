@@ -1,0 +1,24 @@
+{"header" : {
+  "cloc_url"           : "github.com/AlDanial/cloc",
+  "cloc_version"       : "2.00",
+  "elapsed_seconds"    : 0.0935139656066895,
+  "n_files"            : 174,
+  "n_lines"            : 45563,
+  "files_per_second"   : 1860.68464609689,
+  "lines_per_second"   : 487232.037529384,
+  "report_file"        : "/Volumes/Filabbit/lfs/dbs/mermaid@1dfddfde54f9e3231e1a08897d2a7c68af8f3d14/loc.json"},
+"JavaScript" :{
+  "nFiles": 173,
+  "blank": 4848,
+  "comment": 4879,
+  "code": 35835},
+"TypeScript" :{
+  "nFiles": 1,
+  "blank": 0,
+  "comment": 0,
+  "code": 1},
+"SUM": {
+  "blank": 4848,
+  "comment": 4879,
+  "code": 35836,
+  "nFiles": 174} }

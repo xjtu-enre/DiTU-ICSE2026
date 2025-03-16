@@ -1,0 +1,412 @@
+{
+  "variable-declaration/comma-elision": {
+    "all-array-destructuring-variable-declarations": 38,
+    "array-destructuring-with-elision": 0,
+    "feature-usage-against-variable-array-destructuring-usage": 0,
+    "max-count-of-comma-elisions-in-one-declaration": 0,
+    "types": {
+      "comma-elision": 0,
+      "pseudo-elision": 0
+    }
+  },
+  "variable-declaration/complex-rest": {
+    "all-array-rest-variable-declarations": 0,
+    "destructured-rest-variable": 0,
+    "feature-usage-against-variable-array-destructuring-rest-operator": null,
+    "max-count-of-nesting-depth": -1
+  },
+  "variable-declaration/declaration-list": {
+    "all-variable-declaration-statements": 610,
+    "decl-list-have-more-than-one-element": 0,
+    "feature-usage-against-variable-declaration-statement": 0,
+    "max-count-of-list-length": 1
+  },
+  "variable-declaration/destructuring-pattern": {
+    "all-variable-declaration-count": 620,
+    "destructuring-pattern-count": 79,
+    "feature-usage-against-variable-declaration": 0.12741935483870967,
+    "max-count-of-nesting-depth": 2,
+    "types": {
+      "in-for-statement": 0,
+      "not-in-for-statement": 79
+    }
+  },
+  "variable-declaration/empty-destructuring": {
+    "all-variable-declarations": 620,
+    "empty-object-pattern": 0,
+    "empty-array-pattern": 0,
+    "feature-usage-against-variable-declaration": 0
+  },
+  "variable-declaration/use-keyword-var": {
+    "all-variable-declaration-statements": 610,
+    "keyword-var-used": 0,
+    "feature-usage-against-variable-declaration-statement": 0
+  },
+  "misc/binary-operators": {
+    "all-binary-operators": 10,
+    "feature-usage-against-operator": 0,
+    "types": {
+      "normal": 10,
+      "rare": 0,
+      "new": 0
+    }
+  },
+  "misc/standalone-block": {
+    "all-standalone-blocks": 0,
+    "types-decl": {
+      "declaration-inside": 0,
+      "no-declaration": 0
+    },
+    "types-case": {
+      "multiple-in-switch-case-clause": 0,
+      "single-in-switch-case-clause": 0,
+      "none-in-switch-case-clause": 23
+    },
+    "feature-usage-in-switch-case-clause": 0,
+    "max-count-of-nesting-depth": -1,
+    "max-count-of-in-switch-case-clause": 0
+  },
+  "misc/tag-function": {
+    "all-template-literals": 66,
+    "tagged-template-literals": 1,
+    "feature-usage-against-template-literal": 0.015151515151515152,
+    "types": {
+      "same-as-string-literal": 3,
+      "multi-line-string-literal": 1,
+      "normal": 61,
+      "tagged": 1,
+      "fancy-tagged": 0
+    },
+    "fancy-tagged-tag-types": {}
+  },
+  "class/fancy-member-name": {
+    "all-classes": 12,
+    "class-with-fancy-member-name": 0,
+    "feature-usage-against-class": 0,
+    "all-class-members": 94,
+    "class-member-with-fancy-member-name": 0,
+    "types": {
+      "identifier": 94,
+      "string-literal-identifier": 0,
+      "fancy-string-literal": 0,
+      "raw-numeric-literal": 0,
+      "converted-numeric-literal": 0,
+      "computed-value": 0
+    },
+    "feature-usage-against-class-member": 0
+  },
+  "class/private-member": {
+    "all-classes": 12,
+    "class-containing-private-identifier": 0,
+    "feature-usage-against-class": 0,
+    "all-class-members": 94,
+    "private-identifiers": 0,
+    "feature-usage-against-all-members": 0
+  },
+  "class/static-block": {
+    "all-classes": 12,
+    "class-with-static-block": 0,
+    "feature-usage-against-class": 0,
+    "max-count-of-static-block-in-class": -1
+  },
+  "function/parameter-destructuring": {
+    "all-functions": 633,
+    "function-with-dest-param": 86,
+    "function-with-dest-rest-param": 0,
+    "feature-usage-dest-param-against-function": 0.1358609794628752,
+    "feature-usage-dest-rest-param-against-function": 0,
+    "max-count-of-rest-param-dest-pattern-nesting-depth": -1,
+    "max-count-of-non-rest-param-dest-pattern-nesting-depth": 2
+  },
+  "function/use-arguments-in-function-body": {
+    "all-functions": 633,
+    "function-using-arguments": 0,
+    "feature-usage-against-function": 0,
+    "types": {
+      "with-normal-param-decl": 0,
+      "with-rest-param-decl": 0,
+      "without-param-decl": 0
+    },
+    "arguments-context": {}
+  },
+  "function/use-this-in-function-body": {
+    "all-functions": 37,
+    "function-assign-to-this": 0,
+    "feature-usage-against-function": 0,
+    "types": {
+      "called-with-new": 0,
+      "called-without-new": 0
+    },
+    "this-context": {}
+  },
+  "semantic/api-over-literal": {
+    "all-heap-object-creation-point": 4066,
+    "creation-is-not-literal": 0,
+    "feature-usage-against-heap-object-creation-point": 0,
+    "types-object": {
+      "literal": 514,
+      "function": 0,
+      "constructor": 0,
+      "api": 0
+    },
+    "types-object-function-arg-types": {},
+    "types-object-constructor-arg-types": {},
+    "types-object-api-arg-types": {},
+    "types-function": {
+      "literal": 608,
+      "function": 0,
+      "constructor": 0
+    },
+    "types-function-function-arg-types": {},
+    "types-function-constructor-arg-types": {},
+    "types-string": {
+      "literal": 2653,
+      "function": 0,
+      "constructor": 0
+    },
+    "string-function-arg-types": {},
+    "string-constructor-arg-types": {},
+    "types-number": {
+      "literal": 291,
+      "function": 0,
+      "constructor": 0
+    },
+    "types-number-function-arg-types": {},
+    "types-number-constructor-arg-types": {}
+  },
+  "typescript/class-as-type": {
+    "all-class-declarations": 12,
+    "class-used-in-type-context": 0,
+    "feature-usage-against-class-declaration": 0
+  },
+  "typescript/class-constructor-parameter-field": {
+    "all-class-constructors": 12,
+    "class-constructor-with-field": 6,
+    "feature-usage-against-class-constructor": 0,
+    "types": {
+      "pure-parameter": 6,
+      "mixed-field-and-parameter": 0,
+      "pure-field": 6
+    }
+  },
+  "typescript/class-multi-implements": {
+    "all-class-with-implement": 7,
+    "class-with-multiple-implements": 0,
+    "feature-usage-against-class-with-implement": 0,
+    "max-count-of-implements-in-one-class": 1
+  },
+  "typescript/const-enum": {
+    "all-enums": 0,
+    "const-enums": 0,
+    "feature-usage-against-enum-declaration": null
+  },
+  "typescript/declaration-merging": {
+    "all-declaration-merging-usage": 0,
+    "max-count-of-merging-elements": -1,
+    "types": {}
+  },
+  "typescript/enum-member-fancy-name": {
+    "all-enum-members": 0,
+    "enum-member-with-non-identifier": 0,
+    "feature-usage-string-literal-against-enum-member": null,
+    "feature-usage-confusing-name-against-string-literal-name": null
+  },
+  "typescript/enum-member-overridden-initializer": {
+    "all-enum-members": 0,
+    "enum-member-with-initializer": 0,
+    "feature-usage-against-enum-member": null,
+    "types-initializer-node": {},
+    "types-initializer-index": {
+      "PartialInit": 0,
+      "FullInit": 0
+    }
+  },
+  "typescript/interface-multi-extends": {
+    "all-interface-with-extends": 14,
+    "interface-with-multiple-extends": 0,
+    "feature-usage-against-interface-with-extends": 0,
+    "max-count-of-extends-in-one-interface": 1
+  },
+  "typescript/namespace-identifier-path": {
+    "all-namespace-declarations": 0,
+    "namespace-with-identifier-path": 0,
+    "feature-usage-against-namespace-declaration": null,
+    "namespaces-with-overlapped-name": 0,
+    "feature-usage-against-namespace-with-identifier-path": null,
+    "max-count-of-identifier-path-length": -1
+  },
+  "typescript/overridden-type-parameter": {
+    "all-type-parameters": 24,
+    "type-parameters-in-overriding-usage": 0,
+    "feature-usage-against-type-parameter": 0,
+    "max-count-of-overridden-type-parameter-chain-length": -1
+  },
+  "typescript/parameter-this": {
+    "all-functions": 64,
+    "function-with-parameter-this": 0,
+    "feature-usage-against-applicable-function": 0,
+    "types-parent": {
+      "ParentIsFunction": 0,
+      "ParentIsMethod": 0
+    },
+    "types-type": {
+      "typedAsContainingClass": 0,
+      "typedNotAsContainingClass": 0
+    },
+    "indices": {}
+  },
+  "typescript/type-import-export": {
+    "all-typeable-import-export-elements": 1316,
+    "type-only-import-export-elements": 155,
+    "feature-usage-against-all-typeable-element": 0.11778115501519756
+  },
+  "module-system/computational-export": {
+    "all-export-default-declarations": 84,
+    "export-default-with-expression": 3,
+    "feature-usage-against-export-default-declaration": 0.03571428571428571,
+    "types": {
+      "Identifier": 64,
+      "CallExpression": 3
+    }
+  },
+  "module-system/esm-cjs-syntax": {
+    "all-js-files": 153,
+    "esm-files": 148,
+    "cjs-files": 5,
+    "feature-usage-esm-against-cjs": 0.9673202614379085
+  },
+  "module-system/export-value-and-type-in-one-name": {
+    "all-export-names": 2,
+    "export-name-with-multi-roles": 0,
+    "feature-usage-against-export-name": 0,
+    "types-export": {
+      "exported": 0,
+      "not-exported": 0
+    },
+    "types-participant": {}
+  },
+  "module-system/file-extension": {
+    "all-files": 157,
+    "file-with-new-ext-name": 8,
+    "feature-usage-against-file": 0.050955414012738856,
+    "types": {
+      ".cjs": 4,
+      ".js": 7,
+      ".tsx": 82,
+      ".mjs": 4,
+      ".ts": 60
+    }
+  },
+  "module-system/import-attribute": {
+    "all-assertable-declarations": 709,
+    "asserted-declaration": 0,
+    "feature-usage-against-assertable-declaration": 0
+  },
+  "module-system/import-function": {
+    "all-import-declarations": 704,
+    "import-function-callsite": 2,
+    "feature-usage-against-import-declaration": 0.002840909090909091,
+    "types-level": {
+      "InTopLevel": 1,
+      "NotInTopLevel": 1
+    },
+    "types-arg": {
+      "StringLiteral": 2
+    }
+  },
+  "module-system/import-then-export-over-reexport": {
+    "all-reexport-likes": 5,
+    "import-then-export": 0,
+    "reexport": 5,
+    "feature-usage-against-reexport-like": 0,
+    "feature-usage-reexport-against-reexport-like": 1
+  },
+  "module-system/side-effect-import": {
+    "all-import-declarations": 702,
+    "side-effect-import": 3,
+    "feature-usage-against-import-declaration": 0.004273504273504274,
+    "types": {
+      "EmptyBraceImport": 0,
+      "EmptyBraceReexport": 0,
+      "NoBrace": 3
+    }
+  },
+  "module-system/subpath-imports": {
+    "all-module-specifiers": 274,
+    "subpath-module-specifier": 0,
+    "feature-usage-against-module-specifier": 0
+  },
+  "framework/createelement-over-jsx": {
+    "all-api-callsites": 0,
+    "types": {
+      "in-js": 0,
+      "in-jsx": 0
+    },
+    "component-names-dynamic-node": {},
+    "component-names-string-literal": {}
+  },
+  "framework/react-component": {
+    "all-react-components": 106,
+    "class-component": 0,
+    "function-component": 106,
+    "feature-usage-function-component-against-all-react-components": 1,
+    "types": {
+      "class-component": 0,
+      "function-component": 106
+    },
+    "max-count-of-intends-in-a-class-component-lifecycle-method": -1,
+    "max-count-of-useState-hook-calls-in-fc": 2,
+    "max-count-of-useEffect-hook-calls-in-fc": 2
+  },
+  "object-mechanism/decorator-return-new-function": {
+    "decorator-functions": 0,
+    "decorator-returns-new": 0,
+    "feature-usage-against-user-defined-decorator-function": null
+  },
+  "object-mechanism/dynamic-heritage": {
+    "class-with-extension": 7,
+    "dynamic-extension": 0,
+    "feature-usage-against-class-with-extension": 0,
+    "types": {
+      "extends-from-parameter": 0,
+      "extends-from-expression": 0
+    },
+    "extends-from-expression-types": {}
+  },
+  "object-mechanism/first-class-citizen-modify-prop": {
+    "all-functions-and-classes": 645,
+    "modified-functions": 0,
+    "modified-classes": 0,
+    "feature-usage-against-function-and-class": 0,
+    "add-what-to-function": {},
+    "add-what-to-class": {}
+  },
+  "object-mechanism/modify-prototype": {
+    "all-modify-to-prototype-usages": 0,
+    "types-modify-to": {
+      "ModifyClass": 0,
+      "ModifyFunction": 0,
+      "ModifyBuiltIn": 0
+    },
+    "types-entity": {}
+  },
+  "object-mechanism/reassign-to-declaration-name": {
+    "all-functions-and-classes": 645,
+    "modified-functions": 0,
+    "modified-classes": 0,
+    "feature-usage-against-function-and-class": 0,
+    "function-changed-to-what": {},
+    "class-changed-to-what": {}
+  },
+  "object-mechanism/symbols": {
+    "all-symbol-usages": 0,
+    "types": {}
+  },
+  "module-system/monorepo": {
+    "is-monorepo": false,
+    "max-count-of-packages": 2
+  },
+  "module-system/subpath-exports": {
+    "has-subpath-exports": false
+  }
+}
