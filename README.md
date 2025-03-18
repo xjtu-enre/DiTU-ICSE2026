@@ -700,3 +700,88 @@ A and C
 First, developers exhibit low accuracy on subtle feature details. On what destructuring patterns are allowed to nest and difference between constructor call and function call in creating primitives, less than 30\% of developers can correctly select the true answer, and there is no significant difference between senior developers and expert developers, even if some declared to be familiar with the language specification.
 
 However, intuitively, they all agreed with our judgment on the negative impact of these potential code smell patterns (ratings were all below 2.0).
+
+# DiTU's Query Validity verification results
+
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">Group</th>
+      <th colspan="2">Unit Test Benchmarks</th>
+      <th colspan="4">Real-world Sample Benchmarks</th>
+    </tr>
+    <tr>
+      <th>#Test</th>
+      <th>Acc.%</th>
+      <th>#Instance</th>
+      <th>P%</th>
+      <th>R%</th>
+      <th>F1%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LG</td>
+      <td>14</td>
+      <td>100</td>
+      <td>230</td>
+      <td>100</td>
+      <td>100</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <td>SD</td>
+      <td>14</td>
+      <td>100</td>
+      <td>191</td>
+      <td>100</td>
+      <td>100</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <td>FC</td>
+      <td>21</td>
+      <td>100</td>
+      <td>459</td>
+      <td>99.8</td>
+      <td>100</td>
+      <td>99.9</td>
+    </tr>
+    <tr>
+      <td>SM</td>
+      <td>5</td>
+      <td>100</td>
+      <td>230</td>
+      <td>100</td>
+      <td>98.7</td>
+      <td>99.3</td>
+    </tr>
+    <tr>
+      <td>OA</td>
+      <td>19</td>
+      <td>100</td>
+      <td>78</td>
+      <td>100</td>
+      <td>100</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <td>TS</td>
+      <td>9</td>
+      <td>100</td>
+      <td>354</td>
+      <td>100</td>
+      <td>100</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <td>Total</td>
+      <td>82</td>
+      <td>100</td>
+      <td>1,542</td>
+      <td>99.9</td>
+      <td>99.8</td>
+      <td>99.9</td>
+    </tr>
+  </tbody>
+</table>
